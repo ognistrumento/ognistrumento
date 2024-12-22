@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore proporzioni](https://ognistrumento.com/calcolatore-proporzioni/)

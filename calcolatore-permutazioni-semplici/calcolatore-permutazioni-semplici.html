@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="n" placeholder="Totale elementi (n)" min="0">
+        <button id="calculateButton">Calcola Permutazioni</button>
+    </div>
+    <pre class="stats">
+        <p>Numero di permutazioni: <span id="permutations">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+    text-align: center;
+}
+.input-container > input {
+    width: 80%;
+    margin: 10px;
+}
+.input-container button {
+    width: 80%;
+    margin: 10px;
+}
+</style>
+
+<script>
+    const calculateButton = document.getElementById('calculateButton');
+    const nInput = document.getElementById('n');
+    const permutations = document.getElementById('permutations');
+
+    function factorial(num) {
+        if (num === 0 || num === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= num; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    function calculatePermutations() {
+        const n = parseInt(nInput.value);
+
+        if (isNaN(n) || n < 0) {
+            alert("Inserisci un valore valido per n. Assicurati che sia un numero non negativo.");
+            return;
+        }
+
+        // Calcolo delle permutazioni totali senza ripetizioni
+        const result = factorial(n);
+
+        // Aggiornamento del risultato
+        permutations.textContent = result;
+    }
+
+    calculateButton.addEventListener('click', calculatePermutations);
+</script>

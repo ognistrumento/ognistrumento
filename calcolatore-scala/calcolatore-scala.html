@@ -1,0 +1,196 @@
+<div class="tool-container">
+
+    <!-- Calcolo Scala -->
+    <div class="tool-section" id="section-scale">
+        <div class="tool-content">
+            <div>
+                <!-- Dimensione Reale -->
+                <label for="real-size">Dimensione Reale:</label>
+                <input type="number" id="real-size" placeholder="Inserisci dimensione reale">
+                <select id="real-unit">
+                    <option value="m">Metri (m)</option>
+                    <option value="cm">Centimetri (cm)</option>
+                    <option value="mm">Millimetri (mm)</option>
+                </select>
+
+                <!-- Dimensione Scalata -->
+                <label for="scaled-size">Dimensione Scalata:</label>
+                <input type="number" id="scaled-size" placeholder="Inserisci dimensione scalata">
+                <select id="scaled-unit">
+                    <option value="cm">Centimetri (cm)</option>
+                    <option value="m">Metri (m)</option>
+                    <option value="mm">Millimetri (mm)</option>
+                </select>
+
+                <!-- Rapporto di Scala -->
+                <label for="scale-ratio">Rapporto di Scala (1:x):</label>
+                <input type="number" id="scale-ratio" placeholder="Inserisci rapporto (es. 100)">
+
+                <!-- Numero di Decimali -->
+                <label for="decimals">Numero decimali:</label>
+                <select id="decimals">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                </select>
+
+                <button onclick="calculateScale()">Calcola</button>
+                <p class="tool-result">Risultato: <span id="result-scale"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Lascia vuoto uno dei campi per calcolare la dimensione mancante o il rapporto di scala.</p>
+                <h3>Esempio:</h3>
+                <p>Se lasci vuoto il "Rapporto di Scala", inserendo Dimensione Reale = 2 m e Dimensione Scalata = 2 cm, il rapporto sarà 1:100.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .tool-content > div {
+        flex: 1;
+    }
+
+    .tool-section h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .tool-result {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tool-section label,
+    input,
+    button,
+    select {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .tool-section input,
+    button,
+    select {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .explanation-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .explanation-box h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .explanation-box p {
+        margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+function calculateScale() {
+    const realSize = document.getElementById('real-size').value ? parseFloat(document.getElementById('real-size').value) : null;
+    const scaledSize = document.getElementById('scaled-size').value ? parseFloat(document.getElementById('scaled-size').value) : null;
+    const scaleRatio = document.getElementById('scale-ratio').value ? parseFloat(document.getElementById('scale-ratio').value) : null;
+    const decimals = parseInt(document.getElementById('decimals').value);
+
+    // Unità selezionate
+    const realUnit = document.getElementById('real-unit').value;
+    const scaledUnit = document.getElementById('scaled-unit').value;
+
+    let result;
+
+    try {
+        // Conversione delle unità verso un sistema comune (centimetri)
+        const realSizeInCm = convertToCm(realSize, realUnit);
+        const scaledSizeInCm = convertToCm(scaledSize, scaledUnit);
+
+        if (realSize === null && scaledSizeInCm !== null && scaleRatio !== null) {
+            // Calcolo Dimensione Reale
+            result = scaledSizeInCm * scaleRatio;
+            displayResult(result, 'Dimensione Reale', realUnit, decimals);
+        } else if (scaledSize === null && realSizeInCm !== null && scaleRatio !== null) {
+            // Calcolo Dimensione Scalata
+            result = realSizeInCm / scaleRatio;
+            displayResult(result, 'Dimensione Scalata', scaledUnit, decimals);
+        } else if (scaleRatio === null && realSizeInCm !== null && scaledSizeInCm !== null) {
+            // Calcolo Rapporto di Scala
+            result = realSizeInCm / scaledSizeInCm;
+            displayResult(result, 'Rapporto di Scala (1:x)', '', decimals);
+        } else {
+            document.getElementById('result-scale').textContent = "Lascia vuoto solo un campo!";
+        }
+    } catch (error) {
+        document.getElementById('result-scale').textContent = "Errore nei calcoli!";
+    }
+}
+
+// Funzione per convertire le unità in centimetri
+function convertToCm(value, unit) {
+    if (value === null) return null;
+    switch (unit) {
+        case 'm':
+            return value * 100; // Metri in centimetri
+        case 'cm':
+            return value; // Centimetri
+        case 'mm':
+            return value / 10; // Millimetri in centimetri
+        default:
+            throw new Error('Unità non supportata');
+    }
+}
+
+// Funzione per mostrare il risultato nella corretta unità
+function displayResult(result, variable, unit, decimals) {
+    if (variable === 'Rapporto di Scala (1:x)') {
+        document.getElementById('result-scale').textContent = `${variable} = 1:${result.toFixed(decimals)}`;
+    } else {
+        // Convertire il risultato nell'unità scelta
+        let convertedResult;
+        switch (unit) {
+            case 'm':
+                convertedResult = result / 100;
+                break;
+            case 'cm':
+                convertedResult = result;
+                break;
+            case 'mm':
+                convertedResult = result * 10;
+                break;
+            default:
+                convertedResult = result;
+        }
+        
+        document.getElementById('result-scale').textContent = `${variable} = ${convertedResult.toFixed(decimals)} ${unit}`;
+    }
+}
+</script>

@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore permutazioni semplici](https://ognistrumento.com/calcolatore-permutazioni-semplici/)

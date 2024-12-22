@@ -1,0 +1,97 @@
+<div class="tool-section" id="section-birthdate-calculator">
+    <div class="tool-content">
+        <div class="birthdate-input-container">
+            <!-- Codice Fiscale -->
+            <div class="birthdate-group">
+                <label for="fiscal-code">Codice Fiscale:</label>
+                <input type="text" id="fiscal-code" placeholder="Inserisci Codice Fiscale" class="birthdate-input">
+            </div>
+
+            <!-- Bottone per calcolare -->
+            <div class="calculate-button">
+                <button onclick="calculateBirthDate()">Calcola</button>
+            </div>
+
+            <!-- Risultato -->
+            <div class="result-group">
+                <p id="result-birthdate" class="tool-result"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateBirthDate() {
+        const fiscalCode = document.getElementById('fiscal-code').value ? document.getElementById('fiscal-code').value.toUpperCase() : null;
+
+        if (!fiscalCode || fiscalCode.length < 11) {
+            document.getElementById('result-birthdate').textContent = "Errore: Inserisci un Codice Fiscale valido.";
+            return;
+        }
+
+        const birthDate = extractDateFromFiscalCode(fiscalCode);
+
+        if (!birthDate) {
+            document.getElementById('result-birthdate').textContent = "Errore: Codice Fiscale non valido.";
+            return;
+        }
+
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = birthDate.toLocaleDateString('it-IT', options);
+
+        document.getElementById('result-birthdate').textContent = `Data di nascita: ${formattedDate}`;
+    }
+
+    function extractDateFromFiscalCode(cf) {
+        if (cf.length < 11) return null;
+
+        const year = parseInt(cf.substr(6, 2)) + (parseInt(cf.substr(6, 2)) < 30 ? 2000 : 1900);
+        const monthCodes = "ABCDEHLMPRST";
+        const month = monthCodes.indexOf(cf.charAt(8));
+        if (month === -1) return null;
+
+        const day = parseInt(cf.substr(9, 2)) > 31 ? parseInt(cf.substr(9, 2)) - 40 : parseInt(cf.substr(9, 2));
+        return new Date(year, month, day);
+    }
+</script>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .birthdate-input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .birthdate-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .birthdate-input {
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .calculate-button {
+        text-align: center;
+    }
+
+    .calculate-button button {
+        font-size: 16px;
+        padding: 8px 15px;
+        cursor: pointer;
+    }
+
+    .result-group {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>

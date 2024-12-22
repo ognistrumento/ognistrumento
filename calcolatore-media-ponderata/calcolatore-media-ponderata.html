@@ -1,0 +1,108 @@
+<div class="input-container">
+    <div id="entriesContainer">
+        <div class="entry">
+            <label>Valore: <input type="number" class="value" placeholder="Valore"></label>
+            <label>Peso: <input type="number" class="weight" placeholder="Peso"></label>
+        </div>
+        <div class="entry">
+            <label>Valore: <input type="number" class="value" placeholder="Valore"></label>
+            <label>Peso: <input type="number" class="weight" placeholder="Peso"></label>
+        </div>
+        <div class="entry">
+            <label>Valore: <input type="number" class="value" placeholder="Valore"></label>
+            <label>Peso: <input type="number" class="weight" placeholder="Peso"></label>
+        </div>
+    </div>
+    <button id="addEntryButton">Aggiungi voce</button>
+    <button id="calculateButton">Calcola Media Ponderata</button>
+</div>
+<div class="results">
+    <p>Media Ponderata: <span id="weightedAverage">-</span></p>
+</div>
+
+
+<style>
+.input-container {
+    text-align: center;
+}
+.entry {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+.entry label {
+    width: 48%;
+}
+.entry input {
+    width: 100%;
+    padding: 5px;
+    margin: 5px 0;
+}
+.results {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+</style>
+
+<script>
+    const entriesContainer = document.getElementById('entriesContainer');
+    const addEntryButton = document.getElementById('addEntryButton');
+    const calculateButton = document.getElementById('calculateButton');
+    const weightedAverageDisplay = document.getElementById('weightedAverage');
+
+    function addEntry() {
+        const entryDiv = document.createElement('div');
+        entryDiv.className = 'entry';
+        
+        const valueLabel = document.createElement('label');
+        valueLabel.textContent = 'Valore: ';
+        const valueInput = document.createElement('input');
+        valueInput.type = 'number';
+        valueInput.className = 'value';
+        valueInput.placeholder = 'Valore';
+        valueLabel.appendChild(valueInput);
+
+        const weightLabel = document.createElement('label');
+        weightLabel.textContent = 'Peso: ';
+        const weightInput = document.createElement('input');
+        weightInput.type = 'number';
+        weightInput.className = 'weight';
+        weightInput.placeholder = 'Peso';
+        weightLabel.appendChild(weightInput);
+
+        entryDiv.appendChild(valueLabel);
+        entryDiv.appendChild(weightLabel);
+        entriesContainer.appendChild(entryDiv);
+    }
+
+    function calculateWeightedAverage() {
+        const entries = document.querySelectorAll('.entry');
+        let totalWeightedSum = 0;
+        let totalWeight = 0;
+
+        entries.forEach(entry => {
+            const valueInput = entry.querySelector('.value');
+            const weightInput = entry.querySelector('.weight');
+            
+            const value = parseFloat(valueInput.value);
+            const weight = parseFloat(weightInput.value);
+
+            if (!isNaN(value) && !isNaN(weight)) {
+                totalWeightedSum += value * weight;
+                totalWeight += weight;
+            }
+        });
+
+        if (totalWeight === 0) {
+            alert('Inserisci almeno una voce con valori validi.');
+            return;
+        }
+
+        const weightedAverage = (totalWeightedSum / totalWeight).toFixed(2);
+        weightedAverageDisplay.textContent = weightedAverage;
+    }
+
+    addEntryButton.addEventListener('click', addEntry);
+    calculateButton.addEventListener('click', calculateWeightedAverage);
+</script>

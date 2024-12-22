@@ -1,0 +1,80 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="minValue" placeholder="Valore minimo">
+        <input type="number" id="maxValue" placeholder="Valore massimo">
+        <input type="number" id="count" placeholder="Quantità di numeri" min="1" value="1">
+        <div>
+
+            <input type="checkbox" id="uniqueNumbers"> <label for="uniqueNumbers">Evita duplicati</label>
+
+        </div>
+        <button id="generateButton">Genera Numeri Casuali</button>
+        <div class="stats">
+            <pre> <span id="randomNumbers">-</span></pre>
+        </div>
+    </div>
+</div>
+<style>
+    .input-container {
+        text-align: center;
+    }
+
+    .input-container>input {
+        width: 80%;
+        margin: 10px;
+    }
+
+    .input-container button {
+        width: 80%;
+        margin: 10px;
+    }
+</style>
+<script type="text/javascript">
+
+        const generateButton = document.getElementById('generateButton');
+        const minValue = document.getElementById('minValue');
+        const maxValue = document.getElementById('maxValue');
+        const countInput = document.getElementById('count');
+        const uniqueNumbersCheckbox = document.getElementById('uniqueNumbers');
+        const randomNumbersSpan = document.getElementById('randomNumbers');
+
+        function generateRandomNumbers() {
+            const min = parseInt(minValue.value);
+            const max = parseInt(maxValue.value);
+            const count = parseInt(countInput.value);
+            const avoidDuplicates = uniqueNumbersCheckbox.checked;
+
+            if (isNaN(min) || isNaN(max) || min > max) {
+                alert("Inserisci valori validi per il minimo e il massimo (minimo <= massimo).\nAssicurati che i numeri siano interi.");
+                return;
+            }
+
+            if (isNaN(count) || count < 1) {
+                alert("Inserisci una quantità valida di numeri da generare (almeno 1).");
+                return;
+            }
+
+            const rangeSize = max - min + 1;
+            if (avoidDuplicates && count > rangeSize) {
+                alert("Non puoi generare " + count + " numeri unici con questo intervallo.");
+                return;
+            }
+
+            const numbers = [];
+            while (numbers.length < count) {
+                const random = Math.floor(Math.random() * (max - min + 1)) + min;
+                if (avoidDuplicates) {
+                    if (!numbers.includes(random)) {
+                        numbers.push(random);
+                    }
+                } else {
+                    numbers.push(random);
+                }
+            }
+
+            randomNumbersSpan.textContent = numbers.join(", ");
+        }
+
+        generateButton.addEventListener('click', generateRandomNumbers);
+
+</script>

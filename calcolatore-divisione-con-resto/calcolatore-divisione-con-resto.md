@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore divisione con resto](https://ognistrumento.com/calcolatore-divisione-con-resto/)

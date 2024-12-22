@@ -1,0 +1,146 @@
+<div class="tool-container">
+
+    <!-- Calcolo Proporzione -->
+    <div class="tool-section" id="section-proportion">
+        <div class="tool-content">
+            <div>
+                <label for="value-a">A (lascia vuoto se incognita):</label>
+                <input type="number" id="value-a" placeholder="Inserisci A">
+
+                <label for="value-b">B (lascia vuoto se incognita):</label>
+                <input type="number" id="value-b" placeholder="Inserisci B">
+
+                <label for="value-c">C (lascia vuoto se incognita):</label>
+                <input type="number" id="value-c" placeholder="Inserisci C">
+
+                <label for="value-d">D (lascia vuoto se incognita):</label>
+                <input type="number" id="value-d" placeholder="Inserisci D">
+
+                <label for="decimals">Numero decimali:</label>
+                <select id="decimals">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                </select>
+
+                <button onclick="calculateProportion()">Calcola</button>
+                <p class="tool-result">Termine incognito: <span id="result-proportion"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Lascia vuoto uno qualsiasi dei campi per calcolare il valore incognito nella proporzione A : B = C : D.</p>
+                <h3>Esempio:</h3>
+                <p>Se lasci vuoto B, inserendo A=100, C=200 e D=50, B sarà 25.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .tool-content > div {
+        flex: 1;
+    }
+
+    .tool-section h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .tool-result {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tool-section label,
+    input,
+    button,
+    select {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .tool-section input,
+    button,
+    select {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .explanation-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .explanation-box h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .explanation-box p {
+        margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    function calculateProportion() {
+    const valueA = document.getElementById('value-a').value ? parseFloat(document.getElementById('value-a').value) : null;
+    const valueB = document.getElementById('value-b').value ? parseFloat(document.getElementById('value-b').value) : null;
+    const valueC = document.getElementById('value-c').value ? parseFloat(document.getElementById('value-c').value) : null;
+    const valueD = document.getElementById('value-d').value ? parseFloat(document.getElementById('value-d').value) : null;
+    const decimals = parseInt(document.getElementById('decimals').value);
+    let result;
+
+    try {
+        if (valueA === null && valueB !== null && valueC !== null && valueD !== null) {
+            // Calcolo A: A = (B * D) / C
+            result = (valueB * valueC) / valueD;
+            displayResult(result, 'A', decimals);
+        } else if (valueB === null && valueA !== null && valueC !== null && valueD !== null) {
+            // Calcolo B: B = (C * A) / D
+            result = (valueD * valueA) / valueC;
+            displayResult(result, 'B', decimals);
+        } else if (valueC === null && valueA !== null && valueB !== null && valueD !== null) {
+            // Calcolo C: C = (B * D) / A
+            result = (valueA * valueD) / valueB;
+            displayResult(result, 'C', decimals);
+        } else if (valueD === null && valueA !== null && valueB !== null && valueC !== null) {
+            // Calcolo D: D = (C * A) / B
+            result = (valueB * valueC) / valueA;
+            displayResult(result, 'D', decimals);
+        } else {
+            document.getElementById('result-proportion').textContent = "Lascia vuoto solo un campo!";
+        }
+    } catch (error) {
+        document.getElementById('result-proportion').textContent = "Errore nei calcoli!";
+    }
+}
+
+function displayResult(result, variable, decimals) {
+    document.getElementById('result-proportion').textContent = `${variable} = ${result.toFixed(decimals)}`;
+}
+
+</script>

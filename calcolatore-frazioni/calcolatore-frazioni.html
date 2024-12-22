@@ -1,0 +1,179 @@
+<div class="tool-section" id="section-fractions">
+    <div class="tool-content">
+        <div class="fractions-input-container">
+            <!-- Prima frazione -->
+            <div class="fraction-group">
+                <input type="number" id="numerator1" placeholder="Numeratore" class="fraction-input top">
+                <div class="fraction-line"></div>
+                <input type="number" id="denominator1" placeholder="Denominatore" class="fraction-input bottom">
+            </div>
+
+            <!-- Operatore -->
+            <div class="operation-group">
+                <select id="operation">
+                    <option value="add">+</option>
+                    <option value="subtract">-</option>
+                    <option value="multiply">*</option>
+                    <option value="divide">÷</option>
+                    <option value="greater">&gt;</option>
+                    <option value="less">&lt;</option>
+                </select>
+            </div>
+
+            <!-- Seconda frazione -->
+            <div class="fraction-group">
+                <input type="number" id="numerator2" placeholder="Numeratore" class="fraction-input top">
+                <div class="fraction-line"></div>
+                <input type="number" id="denominator2" placeholder="Denominatore" class="fraction-input bottom">
+            </div>
+
+            <!-- Bottone per calcolare -->
+            <div class="equal-sign">
+                <button onclick="calculateFractions()">=</button>
+            </div>
+
+            <!-- Risultato -->
+            <div class="result-group">
+                <p id="result-fractions" class="tool-result"></p>
+            </div>
+        </div>
+        <div class="explanation-box">
+            <h3>Descrizione:</h3>
+            <p>Questo strumento calcola la somma, la sottrazione, la moltiplicazione, la divisione e il confronto tra frazioni, inserisci i valori dei numeratori, dei denominatori e l'operazione che vuoi eseguire e poi clicca sul tasto "="</p>
+            <h3>Esempio:</h3>
+            <p>Se inserisci 12/7, scegli "+" e inserisci 8/5, il risultato sarà "116/35".</p>
+<p> Se vuoi fare solo la riduzione ai minimi termini, inserisci la prima frazione, usa l'operazione "+" e nella seconda frazione inserisci 0/1. Il risultato sarà la prima frazione ridotta ai minimi termini
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateFractions() {
+        const num1 = parseInt(document.getElementById('numerator1').value);
+        const den1 = parseInt(document.getElementById('denominator1').value);
+        const num2 = parseInt(document.getElementById('numerator2').value);
+        const den2 = parseInt(document.getElementById('denominator2').value);
+        const operation = document.getElementById('operation').value;
+
+        let resultNum, resultDen, result;
+
+        if (den1 === 0 || den2 === 0) {
+            document.getElementById('result-fractions').textContent = "Errore: denominatore non può essere 0.";
+            return;
+        }
+
+        switch (operation) {
+            case 'add':
+                resultNum = (num1 * den2) + (num2 * den1);
+                resultDen = den1 * den2;
+                break;
+            case 'subtract':
+                resultNum = (num1 * den2) - (num2 * den1);
+                resultDen = den1 * den2;
+                break;
+            case 'multiply':
+                resultNum = num1 * num2;
+                resultDen = den1 * den2;
+                break;
+            case 'divide':
+                resultNum = num1 * den2;
+                resultDen = den1 * num2;
+                break;
+            case 'greater':
+                result = (num1 / den1) > (num2 / den2);
+                document.getElementById('result-fractions').textContent = result ? "vero" : "falso";
+                return;
+            case 'less':
+                result = (num1 / den1) < (num2 / den2);
+                document.getElementById('result-fractions').textContent = result ? "vero" : "falso";
+                return;
+        }
+
+        // Semplifica frazione
+        const gcd = getGCD(resultNum, resultDen);
+        resultNum = resultNum / gcd;
+        resultDen = resultDen / gcd;
+
+        document.getElementById('result-fractions').textContent = `${resultNum}/${resultDen}`;
+    }
+
+    function getGCD(a, b) {
+        if (!b) return a;
+        return getGCD(b, a % b);
+    }
+</script>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content h2 {
+        text-align: center;
+    }
+
+    .fractions-input-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .fraction-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fraction-input {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .fraction-input.top {
+        margin-bottom: 2px;
+    }
+
+    .fraction-input.bottom {
+        margin-top: 2px;
+    }
+
+    .fraction-line {
+        width: 100%;
+        height: 2px;
+        background-color: black;
+    }
+
+    .operation-group select {
+        font-size: 20px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .equal-sign button {
+        font-size: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .result-group {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .explanation-box {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+</style>

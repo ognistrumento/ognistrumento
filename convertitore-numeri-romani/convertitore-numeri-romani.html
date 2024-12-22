@@ -1,0 +1,129 @@
+<div class="tool-container">
+
+    <!-- Conversion Tool -->
+    <div class="tool-section" id="section-conversion">
+        <div class="tool-content">
+            <div>
+                <!-- Numero Arabo -->
+                <label for="arabic-value">Numero Arabo:</label>
+                <input type="number" id="arabic-value" placeholder="Inserisci numero arabo (esempio: 54)" oninput="convertFrom('arabic')" value="54" min="1" max="3999">
+
+                <!-- Numero Romano -->
+                <label for="roman-value">Numero Romano:</label>
+                <input type="text" id="roman-value" placeholder="Inserisci numero romano (esempio:LIV)" value="LIV" oninput="convertFrom('roman')">
+
+                <p class="tool-result" id="error-message" style="color: red;"></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tool-section label,
+    input {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .tool-section input {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+function convertFrom(type) {
+    const romanInput = document.getElementById('roman-value');
+    const arabicInput = document.getElementById('arabic-value');
+    const errorMessage = document.getElementById('error-message');
+
+    const romanToArabicMap = {
+        'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+    };
+
+    const arabicToRoman = (num) => {
+        const romanNumerals = [
+            { value: 1000, numeral: 'M' },
+            { value: 900, numeral: 'CM' },
+            { value: 500, numeral: 'D' },
+            { value: 400, numeral: 'CD' },
+            { value: 100, numeral: 'C' },
+            { value: 90, numeral: 'XC' },
+            { value: 50, numeral: 'L' },
+            { value: 40, numeral: 'XL' },
+            { value: 10, numeral: 'X' },
+            { value: 9, numeral: 'IX' },
+            { value: 5, numeral: 'V' },
+            { value: 4, numeral: 'IV' },
+            { value: 1, numeral: 'I' }
+        ];
+        let result = '';
+        for (const { value, numeral } of romanNumerals) {
+            while (num >= value) {
+                result += numeral;
+                num -= value;
+            }
+        }
+        return result;
+    };
+
+    const romanToArabic = (roman) => {
+        let total = 0;
+        let prevValue = 0;
+        for (const char of roman.toUpperCase()) {
+            const value = romanToArabicMap[char];
+            if (!value) throw new Error('Numero romano non valido');
+            total += value;
+            if (value > prevValue) total -= 2 * prevValue;
+            prevValue = value;
+        }
+        if (total < 1 || total > 3999) throw new Error('Numero fuori dal range supportato (1-3999)');
+        return total;
+    };
+
+    try {
+        errorMessage.textContent = ""; // Reset error message
+
+        if (type === 'roman') {
+            const arabicValue = romanToArabic(romanInput.value);
+            arabicInput.value = arabicValue;
+        } else if (type === 'arabic') {
+            const arabicValue = parseInt(arabicInput.value, 10);
+            if (isNaN(arabicValue) || arabicValue < 1 || arabicValue > 3999) {
+                throw new Error('Numero arabo non valido o fuori dal range supportato (1-3999)');
+            }
+            romanInput.value = arabicToRoman(arabicValue);
+        } else {
+            throw new Error('Tipo non supportato');
+        }
+    } catch (error) {
+        errorMessage.textContent = error.message;
+        if (type === 'roman'){
+            arabicInput.value = "";
+        } else if (type === 'arabic') {
+            romanInput.value = "";
+        }
+    }
+}
+</script>

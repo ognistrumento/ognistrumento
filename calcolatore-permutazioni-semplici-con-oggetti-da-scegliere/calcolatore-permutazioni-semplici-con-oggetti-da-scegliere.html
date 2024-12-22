@@ -1,0 +1,69 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="n" placeholder="Numero totale di elementi (n)" min="0">
+        <input type="number" id="r" placeholder="Numero di elementi da scegliere (r)" min="0">
+        <div>
+            <input type="checkbox" id="includeRepetitions">
+            <label for="includeRepetitions">Considera ripetizioni</label>
+        </div>
+        <button id="calculateButton">Calcola</button>
+    </div>
+    <pre class="stats">
+        <p>Permutazioni: <span id="permutations">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+    text-align: center;
+}
+.input-container > input {
+    width: 80%;
+    margin: 10px;
+}
+.input-container button {
+    width: 80%;
+    margin: 10px;
+}
+.stats {
+    text-align: center;
+    font-size: 18px;
+}
+</style>
+
+<script>
+    const calculateButton = document.getElementById('calculateButton');
+    const n = document.getElementById('n');
+    const r = document.getElementById('r');
+    const includeRepetitions = document.getElementById('includeRepetitions');
+    const permutations = document.getElementById('permutations');
+
+    function factorial(num) {
+        if (num <= 1) return 1;
+        return num * factorial(num - 1);
+    }
+
+    function calculatePermutations() {
+        const totalElements = parseInt(n.value);
+        const elementsToChoose = parseInt(r.value);
+
+        if (isNaN(totalElements) || isNaN(elementsToChoose) || totalElements < 0 || elementsToChoose < 0 || elementsToChoose > totalElements) {
+            alert("Inserisci valori validi per n e r. Assicurati che r <= n.");
+            return;
+        }
+
+        let result;
+        if (includeRepetitions.checked) {
+            // Permutazioni con ripetizioni
+            result = Math.pow(totalElements, elementsToChoose);
+        } else {
+            // Permutazioni semplici
+            result = factorial(totalElements) / factorial(totalElements - elementsToChoose);
+        }
+
+        // Aggiornamento dei risultati
+        permutations.textContent = result;
+    }
+
+    calculateButton.addEventListener('click', calculatePermutations);
+</script>

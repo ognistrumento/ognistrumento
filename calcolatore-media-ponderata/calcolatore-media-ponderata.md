@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore media ponderata](https://ognistrumento.com/calcolatore-media-ponderata/)

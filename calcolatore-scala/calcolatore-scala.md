@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore scala](https://ognistrumento.com/calcolatore-scala/)

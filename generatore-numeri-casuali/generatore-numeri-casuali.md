@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [generatore numeri casuali](https://ognistrumento.com/generatore-numeri-casuali/)

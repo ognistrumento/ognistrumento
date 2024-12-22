@@ -1,0 +1,194 @@
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: Arial, sans-serif;
+    }
+
+    .tool-content h2 {
+        text-align: center;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .input-group {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    input[type="number"] {
+        width: 60px;
+        padding: 5px;
+        font-size: 16px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .checkbox-group {
+        margin-top: 10px;
+    }
+
+    button {
+        font-size: 18px;
+        padding: 5px 15px;
+        cursor: pointer;
+    }
+
+    .result-group {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .explanation-box {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+</style>
+
+<div class="tool-section">
+    <div class="tool-content">
+        <div class="input-container">
+            <div class="input-group">
+                <label for="a">a:</label>
+                <input type="number" id="a" placeholder="a">
+                <label for="b">b:</label>
+                <input type="number" id="b" placeholder="b">
+                <label for="c">c:</label>
+                <input type="number" id="c" placeholder="c">
+            </div>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="complexSolutions" checked> Mostra soluzioni complesse
+                </label>
+            </div>
+
+            <button onclick="solveQuadratic()">Calcola</button>
+        </div>
+
+        <div class="result-group">
+            <p id="resultStandard"></p>
+            <p id="result"></p>
+        </div>
+    </div>
+    <div class="explanation-box">
+        <h3>Descrizione:</h3>
+        <p>Inserisci i coefficienti dell'equazione quadratica per calcolare le soluzioni. Puoi scegliere di visualizzare
+            anche le soluzioni complesse se non ci sono radici reali.</p>
+        <p>Le soluzioni reali e complesse potrebbero essere ulteriormente semplificabili</p>
+    </div>
+</div>
+
+<script>
+    function getGCD(a, b) {
+        if (!b) return a;
+        return getGCD(b, a % b);
+    }
+
+    function simplifyFraction(numerator, denominator) {
+        const divisor = getGCD(Math.abs(numerator), Math.abs(denominator));
+        numerator /= divisor;
+        denominator /= divisor;
+        return denominator === 1 ? `${numerator}` : `${numerator}/${denominator}`;
+    }
+
+    function isPerfectSquare(number) {
+        if (number < 0) return false;
+        const sqrt = Math.sqrt(number);
+        return Number.isInteger(sqrt);
+    }
+
+    function solveQuadratic() {
+        const a = parseFloat(document.getElementById('a').value);
+        const b = parseFloat(document.getElementById('b').value);
+        const c = parseFloat(document.getElementById('c').value);
+        const showComplex = document.getElementById('complexSolutions').checked;
+        const resultElement = document.getElementById('result');
+        const resultStandardElement = document.getElementById('resultStandard');
+
+        // Reset result elements
+        resultElement.textContent = '';
+        resultStandardElement.textContent = '';
+
+        if (isNaN(a) || isNaN(b) || isNaN(c)) {
+            resultElement.textContent = "Errore: Inserisci valori validi per a, b e c.";
+            return;
+        }
+
+        if (a === 0) {
+            resultElement.textContent = "Errore: a non può essere 0 (non è un'equazione quadratica).";
+            return;
+        }
+
+        debugger;
+        const discriminant = b * b - 4 * a * c;
+
+        if (discriminant > 0) {
+            const isDiscPerfectSquare = isPerfectSquare(discriminant);
+            const sqrtD = Math.sqrt(discriminant);
+
+            const num1 = -b + sqrtD;
+            const num2 = -b - sqrtD;
+            const denom = 2 * a;
+
+            resultElement.innerHTML = `
+                    Soluzioni decimali distinte:<br>
+                    x<sub>1</sub> = ${(num1 / denom).toFixed(6)} <br>
+                    x<sub>2</sub> = ${(num2 / denom).toFixed(6)}
+                `;
+
+            const simplified1 = isDiscPerfectSquare ? simplifyFraction(num1, denom) : `${-b} + √${discriminant} / ${denom}`;
+            const simplified2 = isDiscPerfectSquare ? simplifyFraction(num2, denom) : `${-b} - √${discriminant} / ${denom}`;
+
+
+            resultStandardElement.innerHTML = `
+                    Soluzioni reali distinte (potrebbero richiedere ulteriore semplificazione):<br>
+                    x<sub>1</sub> = ${simplified1} <br>
+                    x<sub>2</sub> = ${simplified2}
+                `;
+
+
+        } else if (discriminant === 0) {
+            const num = -b;
+            const denom = 2 * a;
+
+            resultElement.innerHTML = `Soluzione decimale unica: x = ${(num / denom).toFixed(6)}`;
+            resultStandardElement.innerHTML = `Soluzione reale unica: x = ${simplifyFraction(num, denom)}`;
+        } else {
+            const realPart = -b / (2 * a);
+            const imagPart = Math.sqrt(-discriminant) / (2 * a);
+
+            if (showComplex) {
+                resultElement.innerHTML = `
+                        Soluzioni complesse (in decimali):<br>
+                        x<sub>1</sub> = ${realPart.toFixed(6)} + ${imagPart.toFixed(6)}i <br>
+                        x<sub>2</sub> = ${realPart.toFixed(6)} - ${imagPart.toFixed(6)}i
+                    `;
+
+                const rightPart = isPerfectSquare(-discriminant) ? simplifyFraction(Math.sqrt(-discriminant), 2 * a) : `√${-discriminant}/${2 * a}`;
+
+
+                resultStandardElement.innerHTML = `
+                        Soluzioni complesse (potrebbero richiedere ulteriore semplificazione):<br>
+                        x<sub>1</sub> = ${simplifyFraction(-b, 2 * a)} + ${rightPart}i <br>
+                        x<sub>2</sub> = ${simplifyFraction(-b, 2 * a)} - ${rightPart}i
+                    `;
+            } else {
+                resultElement.textContent = "Nessuna soluzione reale. Attiva l'opzione per le soluzioni complesse.";
+            }
+        }
+    }
+</script>

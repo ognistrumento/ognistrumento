@@ -1,0 +1,105 @@
+<div class="tool-container">
+
+    <!-- Conversion Tool -->
+    <div class="tool-section" id="section-conversion">
+        <div class="tool-content">
+            <div>
+                <!-- Valore Esadecimale -->
+                <label for="hex-value">Valore Esadecimale:</label>
+                <input type="text" id="hex-value" placeholder="Inserisci valore esadecimale" oninput="convertFrom('hex')">
+
+                <!-- Valore Decimale -->
+                <label for="decimal-value">Valore Decimale:</label>
+                <input type="number" id="decimal-value" placeholder="Inserisci valore decimale" oninput="convertFrom('decimal')">
+
+                <!-- Valore Ottale -->
+                <label for="octal-value">Valore Ottale:</label>
+                <input type="text" id="octal-value" placeholder="Inserisci valore ottale" oninput="convertFrom('octal')">
+
+                <!-- Valore Binario -->
+                <label for="binary-value">Valore Binario:</label>
+                <input type="text" id="binary-value" placeholder="Inserisci valore binario" oninput="convertFrom('binary')">
+
+                <p class="tool-result" id="error-message" style="color: red;"></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .tool-section label,
+    input {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .tool-section input {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+function convertFrom(type) {
+    const hexInput = document.getElementById('hex-value');
+    const decimalInput = document.getElementById('decimal-value');
+    const octalInput = document.getElementById('octal-value');
+    const binaryInput = document.getElementById('binary-value');
+    const errorMessage = document.getElementById('error-message');
+
+    try {
+        let decimalValue;
+        errorMessage.textContent = ""; // Reset error message
+
+        switch (type) {
+            case 'hex':
+                decimalValue = parseInt(hexInput.value, 16);
+                break;
+            case 'decimal':
+                decimalValue = parseInt(decimalInput.value, 10);
+                break;
+            case 'octal':
+                decimalValue = parseInt(octalInput.value, 8);
+                break;
+            case 'binary':
+                decimalValue = parseInt(binaryInput.value, 2);
+                break;
+            default:
+                throw new Error('Tipo non supportato');
+        }
+
+        if (isNaN(decimalValue)) {
+            throw new Error('Valore non valido');
+        }
+
+        // Aggiorna tutti i campi
+        hexInput.value = decimalValue.toString(16).toUpperCase();
+        decimalInput.value = decimalValue.toString(10);
+        octalInput.value = decimalValue.toString(8);
+        binaryInput.value = decimalValue.toString(2);
+    } catch (error) {
+        errorMessage.textContent = error.message;
+    }
+}
+</script>

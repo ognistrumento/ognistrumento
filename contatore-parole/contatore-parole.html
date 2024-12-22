@@ -1,0 +1,135 @@
+<div class="container">
+    <div class="textarea-container">
+        <textarea id="textArea" placeholder="Inserisci il testo qui..."></textarea>
+    </div>
+    <div class="input-container">
+        <input type="text" id="searchInput" placeholder="Inserisci una parola o frase da contare (opzionale)">
+    </div>
+    <div class="stats">
+        <h3>Statistiche del Testo</h3>
+        <p>Numero di caratteri: <span id="charCount">0</span></p>
+        <p>Numero di parole: <span id="wordCount">0</span></p>
+        <p>Numero di frasi: <span id="sentenceCount">0</span></p>
+        <p>Numero di paragrafi: <span id="paragraphCount">0</span></p>
+        <p>Occorrenze della parola/frase cercata: <span id="searchCount">0</span></p>
+    </div>
+    <div class="most-common-words">
+        <h3>5 Parole più Comuni</h3>
+        <ol id="commonWordsList"></ol>
+    </div>
+</div>
+
+<script>
+    const textArea = document.getElementById('textArea');
+    const searchInput = document.getElementById('searchInput');
+    const charCount = document.getElementById('charCount');
+    const wordCount = document.getElementById('wordCount');
+    const sentenceCount = document.getElementById('sentenceCount');
+    const paragraphCount = document.getElementById('paragraphCount');
+    const searchCount = document.getElementById('searchCount');
+    const commonWordsList = document.getElementById('commonWordsList');
+
+    function updateStats() {
+        const text = textArea.value;
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+        // Numero di caratteri
+        charCount.textContent = text.length;
+
+        // Numero di parole
+        const words = text.match(/\b\w+\b/g) || [];
+        wordCount.textContent = words.length;
+
+        // Numero di frasi
+        const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim() !== "");
+        sentenceCount.textContent = sentences.length;
+
+        // Numero di paragrafi
+        const paragraphs = text.split(/\n+/).filter(paragraph => paragraph.trim() !== "");
+        paragraphCount.textContent = paragraphs.length;
+
+        // Occorrenze della parola/frase cercata
+        if (searchTerm) {
+            const regex = new RegExp(`\\b${searchTerm}\\b`, 'gi');
+            searchCount.textContent = (text.match(regex) || []).length;
+        } else {
+            searchCount.textContent = 0;
+        }
+
+        // 5 Parole più comuni
+        const wordFrequency = {};
+        words.forEach(word => {
+            const lowerWord = word.toLowerCase();
+            wordFrequency[lowerWord] = (wordFrequency[lowerWord] || 0) + 1;
+        });
+
+        const sortedWords = Object.entries(wordFrequency)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+
+        commonWordsList.innerHTML = sortedWords
+            .map(([word, count]) => `<li>${word}: ${count}</li>`)
+            .join('');
+    }
+
+    // Aggiorna le statistiche dinamicamente
+    textArea.addEventListener('input', updateStats);
+    searchInput.addEventListener('input', updateStats);
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .textarea-container {
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .stats {
+        margin-top: 20px;
+    }
+
+    .stats p {
+        margin: 5px 0;
+    }
+
+    .most-common-words {
+        margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        textarea {
+            height: 100px;
+        }
+    }
+</style>

@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [generatore codice qr](https://ognistrumento.com/generatore-codice-qr/)

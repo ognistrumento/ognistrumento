@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="loanAmount" placeholder="Importo del mutuo (es. 100000)">
+        <input type="number" id="interestRate" step="0.01" placeholder="Tasso di interesse annuale (%)">
+        <input type="number" id="loanDuration" placeholder="Durata del mutuo (anni)">
+        <select id="paymentType">
+            <option value="12">Mensile</option>
+            <option value="4">Trimestrale</option>
+            <option value="2">Semestrale</option>
+        </select>
+        <button id="calculateButton">Calcola</button>
+    </div>
+    <div class="stats">
+        <h3>Risultati</h3>
+        <p>Importo rata: <span id="installmentAmount">-</span><span> €</span></p>
+        <p>Costo totale del mutuo: <span id="totalCost">-</span><span> €</span></p>
+        <p>Valore interessi totali: <span id="totalInterest">-</span><span> €</span></p>
+    </div>
+</div>
+
+<script>
+    const calculateButton = document.getElementById('calculateButton');
+    const loanAmount = document.getElementById('loanAmount');
+    const interestRate = document.getElementById('interestRate');
+    const loanDuration = document.getElementById('loanDuration');
+    const paymentType = document.getElementById('paymentType');
+    const installmentAmount = document.getElementById('installmentAmount');
+    const totalCost = document.getElementById('totalCost');
+    const totalInterest = document.getElementById('totalInterest');
+
+    function calculateLoan() {
+        const P = parseFloat(loanAmount.value);
+        const r = parseFloat(interestRate.value) / 100 / paymentType.value;
+        const n = parseInt(loanDuration.value) * paymentType.value;
+
+        if (isNaN(P) || isNaN(r) || isNaN(n) || P <= 0 || r <= 0 || n <= 0) {
+            alert("Inserisci valori validi per tutti i campi.");
+            return;
+        }
+
+        // Formula per il calcolo della rata
+        const installment = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+        // Calcolo del costo totale e interessi
+        const totalLoanCost = installment * n;
+        const totalLoanInterest = totalLoanCost - P;
+
+        // Aggiornamento dei risultati
+        installmentAmount.textContent = installment.toFixed(2);
+        totalCost.textContent = totalLoanCost.toFixed(2);
+        totalInterest.textContent = totalLoanInterest.toFixed(2);
+    }
+
+    calculateButton.addEventListener('click', calculateLoan);
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .input-container {
+        margin-bottom: 20px;
+    }
+
+    .input-container input, select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .input-container button {
+        width: 100%;
+        padding: 10px;
+    }
+
+</style>

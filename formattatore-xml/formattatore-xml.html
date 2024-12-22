@@ -1,0 +1,89 @@
+<div class="container">
+    <div class="textarea-container">
+        <textarea id="xmlInput" placeholder="Inserisci l'XML qui..."></textarea>
+    </div>
+    <div class="output-container">
+        <h3>XML Formattato</h3>
+        <pre id="formattedXmlOutput" class="output-box"></pre>
+    </div>
+    <div class="error-message" id="xmlError" style="color: red; display: none;">
+        L'XML inserito non è valido. Correggi e riprova.
+    </div>
+</div>
+
+<script>
+    const xmlInput = document.getElementById('xmlInput');
+    const formattedXmlOutput = document.getElementById('formattedXmlOutput');
+    const xmlError = document.getElementById('xmlError');
+
+    function formatXml(xml) {
+        const PADDING = '  '; 
+        const reg = /(<\/?\w+[^>]*>)([^<]*)/g; 
+        let pad = 0;
+        return xml.replace(reg, function(match, tag, text) {
+            let result = '';
+            if (tag.match(/^<\//)) {
+                pad -= 1;
+            }
+            result += PADDING.repeat(pad) + tag;
+            if (text.trim()) {
+                result += text;
+            }
+            result += '\n';
+            if (tag.match(/^<[^\/]+[^>]*>$/)) {
+                pad += 1;
+            }
+            return result;
+        }).trim();
+    }
+
+    function validateAndFormatXml() {
+        const xmlText = xmlInput.value.trim();
+        try {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+
+            if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                throw new Error('Errore di parsing XML');
+            }
+
+            const formattedXml = formatXml(xmlText);
+            formattedXmlOutput.textContent = formattedXml;
+            xmlError.style.display = 'none';
+        } catch (e) {
+            xmlError.style.display = 'block';
+            formattedXmlOutput.textContent = '';
+        }
+    }
+
+    xmlInput.addEventListener('input', validateAndFormatXml);
+</script>
+
+<style>
+    .output-container {
+        margin-top: 20px;
+    }
+
+    .output-box {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .error-message {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .output-box {
+            font-size: 12px;
+        }
+    }
+</style>

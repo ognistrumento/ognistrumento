@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="textarea-container">
+        <textarea id="base64Input" placeholder="Inserisci il testo codificato in Base64 qui..."></textarea>
+    </div>
+    <div class="output-container">
+        <h3>Testo Decodificato</h3>
+        <pre id="decodedOutput" class="output-box"></pre>
+    </div>
+    <div class="error-message" id="decodeError" style="color: red; display: none;">
+        Errore: Impossibile decodificare il testo. Assicurati che il testo sia valido Base64.
+    </div>
+</div>
+
+<script>
+    const base64Input = document.getElementById('base64Input');
+    const decodedOutput = document.getElementById('decodedOutput');
+    const decodeError = document.getElementById('decodeError');
+
+    function decodeFromBase64() {
+        const base64Text = base64Input.value.trim();
+        try {
+            // Decodifica il testo da Base64 gestendo i caratteri speciali
+            const decodedText = decodeURIComponent(escape(atob(base64Text)));
+
+            // Mostra il risultato
+            decodedOutput.textContent = decodedText;
+            decodeError.style.display = 'none';
+        } catch (e) {
+            // Mostra l'errore
+            decodeError.style.display = 'block';
+            decodedOutput.textContent = '';
+        }
+    }
+
+    base64Input.addEventListener('input', decodeFromBase64);
+</script>
+
+<style>
+    .output-container {
+        margin-top: 20px;
+    }
+
+    .output-box {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .error-message {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .output-box {
+            font-size: 12px;
+        }
+    }
+</style>

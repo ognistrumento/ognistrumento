@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolo-rate-mutuo](https://ognistrumento.com/calcolo-rate-mutuo/)

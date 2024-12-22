@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore ore lavorative](https://ognistrumento.com/calcolatore-ore-lavorative/)

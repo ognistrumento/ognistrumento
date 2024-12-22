@@ -1,0 +1,197 @@
+<div class="tool-container">
+
+    <!-- Calcolo ore lavorative totali -->
+    <div class="tool-section" id="section1">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare le ore di lavoro totali</h2>
+                <label for="work-days">Numero di giorni lavorativi:</label>
+                <input type="number" id="work-days" placeholder="Numero di giorni">
+                <label for="hours-per-day">Ore lavorate al giorno:</label>
+                <input type="number" id="hours-per-day" placeholder="Ore per giorno">
+                <button onclick="calculateTotalHours()">Calcola</button>
+                <p class="tool-result">Totale ore: <span id="result-total-hours"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola il totale delle ore lavorate in un periodo specificato.</p>
+                <h3>Esempio:</h3>
+                <p>Se lavori 8 ore al giorno per 20 giorni, il risultato sarà 160 ore.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calcolo della compensazione base -->
+    <div class="tool-section" id="section2">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare la compensazione base</h2>
+                <label for="hourly-rate">Tariffa oraria (€):</label>
+                <input type="number" id="hourly-rate" placeholder="Tariffa oraria">
+                <label for="total-hours">Ore totali lavorate:</label>
+                <input type="number" id="total-hours" placeholder="Ore totali">
+                <button onclick="calculateBaseCompensation()">Calcola</button>
+                <p class="tool-result">Compensazione base: €<span id="result-base-compensation"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola la compensazione base in base alla tariffa oraria e al numero di ore lavorate.</p>
+                <h3>Esempio:</h3>
+                <p>Se guadagni 15€ l'ora e lavori 160 ore, il risultato sarà 2400€.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calcolo delle maggiorazioni -->
+    <div class="tool-section" id="section3">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare le maggiorazioni</h2>
+                <label for="night-hours">Ore notturne lavorate:</label>
+                <input type="number" id="night-hours" placeholder="Ore notturne">
+                <label for="night-rate">Maggiorazione notturna (%):</label>
+                <input type="number" id="night-rate" placeholder="Percentuale maggiorazione">
+
+                <label for="weekend-hours">Ore lavorate nel weekend:</label>
+                <input type="number" id="weekend-hours" placeholder="Ore weekend">
+                <label for="weekend-rate">Maggiorazione weekend (%):</label>
+                <input type="number" id="weekend-rate" placeholder="Percentuale maggiorazione">
+
+                <label for="base-hourly-rate">Tariffa oraria base (€):</label>
+                <input type="number" id="base-hourly-rate" placeholder="Tariffa oraria base">
+                <button onclick="calculateExtraCompensation()">Calcola</button>
+                <p class="tool-result">Maggiorazioni totali: €<span id="result-extra-compensation"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola le maggiorazioni per le ore lavorate di notte o nei weekend.</p>
+                <h3>Esempio:</h3>
+                <p>Se lavori 10 ore di notte con una maggiorazione del 20% su una tariffa base di 15€, la maggiorazione sarà 30€.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calcolo compensazione totale -->
+    <div class="tool-section" id="section4">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare la compensazione totale</h2>
+                <label for="base-compensation">Compensazione base (€):</label>
+                <input type="number" id="base-compensation" placeholder="Compensazione base">
+                <label for="extra-compensation">Compensazione aggiuntiva (€):</label>
+                <input type="number" id="extra-compensation" placeholder="Compensazione aggiuntiva">
+                <button onclick="calculateTotalCompensation()">Calcola</button>
+                <p class="tool-result">Compensazione totale: €<span id="result-total-compensation"></span></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola la compensazione totale sommando la compensazione base e le maggiorazioni.</p>
+                <h3>Esempio:</h3>
+                <p>Se la compensazione base è 2400€ e la compensazione aggiuntiva è 300€, il totale sarà 2700€.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .tool-content>div {
+        flex: 1;
+    }
+
+    .tool-section h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .tool-result {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    tool-container label,
+    input,
+    button {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    tool-container input,
+    button {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .explanation-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .explanation-box h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .explanation-box p {
+        margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    function calculateTotalHours() {
+        const workDays = parseFloat(document.getElementById('work-days').value);
+        const hoursPerDay = parseFloat(document.getElementById('hours-per-day').value);
+        const result = workDays * hoursPerDay;
+        document.getElementById('result-total-hours').textContent = `${result}`;
+    }
+
+    function calculateBaseCompensation() {
+        const hourlyRate = parseFloat(document.getElementById('hourly-rate').value);
+        const totalHours = parseFloat(document.getElementById('total-hours').value);
+        const result = hourlyRate * totalHours;
+        document.getElementById('result-base-compensation').textContent = `${result}`;
+    }
+
+    function calculateExtraCompensation() {
+        const nightHours = parseFloat(document.getElementById('night-hours').value);
+        const nightRate = parseFloat(document.getElementById('night-rate').value);
+        const weekendHours = parseFloat(document.getElementById('weekend-hours').value);
+        const weekendRate = parseFloat(document.getElementById('weekend-rate').value);
+        const baseHourlyRate = parseFloat(document.getElementById('base-hourly-rate').value);
+
+        const nightCompensation = nightHours * baseHourlyRate * (nightRate / 100);
+        const weekendCompensation = weekendHours * baseHourlyRate * (weekendRate / 100);
+        const result = nightCompensation + weekendCompensation;
+
+        document.getElementById('result-extra-compensation').textContent = ` ${result}`;
+    }
+
+    function calculateTotalCompensation() {
+        const baseCompensation = parseFloat(document.getElementById('base-compensation').value);
+        const extraCompensation = parseFloat(document.getElementById('extra-compensation').value);
+        const result = baseCompensation + extraCompensation;
+        document.getElementById('result-total-compensation').textContent = `${result}`;
+    }
+</script>

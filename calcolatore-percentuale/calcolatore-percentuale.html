@@ -1,0 +1,299 @@
+<div class="tool-container">
+
+    <div class="tool-section" id="section1">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare la percentuale di un numero</h2>
+                <label for="percentage-of-number">Inserisci il numero:</label>
+                <input type="number" id="percentage-of-number" placeholder="Numero">
+                <label for="percentage">Inserisci la percentuale:</label>
+                <input type="number" id="percentage" placeholder="Percentuale">
+                <button onclick="calculatePercentage()">Calcola</button>
+                <p class="tool-result" id="result-percentage"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola la percentuale di un numero</p>
+                <h3>Esempio:</h3>
+                <p>Se il numero è 50 e la percentuale è 20%, il risultato sarà 10.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incidenza percentuale tra due numeri -->
+    <div class="tool-section" id="section2">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare l'incidenza percentuale tra due numeri</h2>
+                <label for="base">Numero base:</label>
+                <input type="number" id="base" placeholder="Base">
+                <label for="part">Numero parte:</label>
+                <input type="number" id="part" placeholder="Parte">
+                <button onclick="calculateIncidence()">Calcola</button>
+                <p class="tool-result" id="result-incidence"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Calcola quanto un numero rappresenta in percentuale rispetto ad un altro.</p>
+                <h3>Esempio:</h3>
+                <p>Se il numero base è 100 e la parte è 25, il risultato sarà 25%.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rapporto percentuale tra due numeri -->
+    <div class="tool-section" id="section3">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare il rapporto percentuale tra due numeri</h2>
+                <label for="num1">Numero 1:</label>
+                <input type="number" id="num1" placeholder="Numero 1">
+                <label for="num2">Numero 2:</label>
+                <input type="number" id="num2" placeholder="Numero 2">
+                <button onclick="calculateRatio()">Calcola</button>
+                <p class="tool-result" id="result-ratio"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola il rapporto percentuale tra due numeri (il primo come
+                    percentuale del secondo) </p>
+                <h3>Esempio:</h3>
+                <p>Se il numero 1 è 50 e il numero 2 è 200, il risultato sarà 25%.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incremento o decremento percentuale -->
+    <div class="tool-section" id="section4">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare l'incremento o decremento percentuale tra due numeri</h2>
+                <label for="old">Valore iniziale:</label>
+                <input type="number" id="old" placeholder="Iniziale">
+                <label for="new">Valore finale:</label>
+                <input type="number" id="new" placeholder="Finale">
+                <button onclick="calculateChange()">Calcola</button>
+                <p class="tool-result" id="result-change"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola la variazione percentuale tra un numero iniziale e un numero finale,
+                    (incremento/decremento)</p>
+                <h3>Esempio:</h3>
+                <p>Se il valore iniziale è 100 e il valore finale è 120, il risultato sarà un incremento del 20%.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Incremento percentuale di un numero -->
+    <div class="tool-section" id="section5">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare l'incremento percentuale di un numero</h2>
+                <label for="number-to-increase">Numero:</label>
+                <input type="number" id="number-to-increase" placeholder="Numero">
+                <label for="increase-percent">Percentuale di incremento:</label>
+                <input type="number" id="increase-percent" placeholder="Percentuale">
+                <button onclick="calculateIncrease()">Calcola</button>
+                <p class="tool-result" id="result-increase"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola il nuovo valore di un numero dopo aver applicato una percentuale di
+                    incremento.</p>
+                <h3>Esempio:</h3>
+                <p>Se il numero è 100 e la percentuale di incremento è 20%, il risultato sarà 120.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decremento percentuale di un numero -->
+    <div class="tool-section" id="section6">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare il decremento percentuale di un numero</h2>
+                <label for="number-to-decrease">Numero:</label>
+                <input type="number" id="number-to-decrease" placeholder="Numero">
+                <label for="decrease-percent">Percentuale di decremento:</label>
+                <input type="number" id="decrease-percent" placeholder="Percentuale">
+                <button onclick="calculateDecrease()">Calcola</button>
+                <p class="tool-result" id="result-decrease"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola il nuovo valore di un numero dopo aver applicato una percentuale di
+                    decremento.</p>
+                <h3>Esempio:</h3>
+                <p>Se il numero è 100 e la percentuale di decremento è 20%, il risultato sarà 80.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recupero del valore iniziale dopo incremento -->
+    <div class="tool-section" id="section7">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare il Recupero del valore iniziale dopo incremento</h2>
+                <label for="increased-value">Valore incrementato:</label>
+                <input type="number" id="increased-value" placeholder="Incrementato">
+                <label for="increment-percent">Percentuale di incremento:</label>
+                <input type="number" id="increment-percent" placeholder="Percentuale">
+                <button onclick="recoverInitialAfterIncrease()">Calcola</button>
+                <p class="tool-result" id="result-recover-increase"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola il numero iniziale dato un numero finale ottenuto dopo un incremento
+                    percentuale.</p>
+                <h3>Esempio:</h3>
+                <p>Se il valore incrementato è 120 e la percentuale di incremento è 20%, il valore iniziale sarà 100.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recupero del valore iniziale dopo decremento -->
+    <div class="tool-section" id="section8">
+        <div class="tool-content">
+            <div>
+                <h2>Calcolare il recupero del valore iniziale dopo decremento</h2>
+                <label for="decreased-value">Valore decrementato:</label>
+                <input type="number" id="decreased-value" placeholder="Decrementato">
+                <label for="decrement-percent">Percentuale di decremento:</label>
+                <input type="number" id="decrement-percent" placeholder="Percentuale">
+                <button onclick="recoverInitialAfterDecrease()">Calcola</button>
+                <p class="tool-result" id="result-recover-decrease"></p>
+            </div>
+            <div class="explanation-box">
+                <h3>Descrizione:</h3>
+                <p>Questa funzione calcola il numero iniziale dato un valore finale ottenuto dopo un decremento
+                    percentuale.</p>
+                <h3>Esempio:</h3>
+                <p>Se il valore decrementato è 80 e la percentuale di decremento è 20%, il valore iniziale sarà 100.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .tool-content>div {
+        flex: 1;
+    }
+
+    .tool-section h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .tool-result {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    tool-container label,
+    input,
+    button {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    tool-container input,
+    button {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .explanation-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .explanation-box h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .explanation-box p {
+        margin: 5px 0;
+    }
+
+    @media (max-width: 768px) {
+        .tool-content {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    function calculatePercentage() {
+        const number = parseFloat(document.getElementById('percentage-of-number').value);
+        const percent = parseFloat(document.getElementById('percentage').value);
+        const result = (number * percent) / 100;
+        document.getElementById('result-percentage').textContent = `Risultato: ${result}`;
+    }
+
+    function calculateIncidence() {
+        const base = parseFloat(document.getElementById('base').value);
+        const part = parseFloat(document.getElementById('part').value);
+        const result = (part / base) * 100;
+        document.getElementById('result-incidence').textContent = `Incidenza: ${result}%`;
+    }
+
+    function calculateRatio() {
+        const num1 = parseFloat(document.getElementById('num1').value);
+        const num2 = parseFloat(document.getElementById('num2').value);
+        const result = (num1 / num2) * 100;
+        document.getElementById('result-ratio').textContent = `Rapporto: ${result}%`;
+    }
+
+    function calculateChange() {
+        const oldVal = parseFloat(document.getElementById('old').value);
+        const newVal = parseFloat(document.getElementById('new').value);
+        const result = ((newVal - oldVal) / oldVal) * 100;
+        document.getElementById('result-change').textContent = `Variazione: ${result}%`;
+    }
+
+    function calculateIncrease() {
+        const number = parseFloat(document.getElementById('number-to-increase').value);
+        const percent = parseFloat(document.getElementById('increase-percent').value);
+        const result = number + (number * percent) / 100;
+        document.getElementById('result-increase').textContent = `Risultato: ${result}`;
+    }
+
+    function calculateDecrease() {
+        const number = parseFloat(document.getElementById('number-to-decrease').value);
+        const percent = parseFloat(document.getElementById('decrease-percent').value);
+        const result = number - (number * percent) / 100;
+        document.getElementById('result-decrease').textContent = `Risultato: ${result}`;
+    }
+
+    function recoverInitialAfterIncrease() {
+        const finalValue = parseFloat(document.getElementById('increased-value').value);
+        const percent = parseFloat(document.getElementById('increment-percent').value);
+        const result = finalValue / (1 + percent / 100);
+        document.getElementById('result-recover-increase').textContent = `Valore iniziale: ${result}`;
+    }
+
+    function recoverInitialAfterDecrease() {
+        const finalValue = parseFloat(document.getElementById('decreased-value').value);
+        const percent = parseFloat(document.getElementById('decrement-percent').value);
+        const result = finalValue / (1 - percent / 100);
+        document.getElementById('result-recover-decrease').textContent = `Valore iniziale: ${result}`;
+    }
+</script>

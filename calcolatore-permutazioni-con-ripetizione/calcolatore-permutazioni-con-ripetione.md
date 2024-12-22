@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore permutazioni con ripetizione](https://ognistrumento.com/calcolatore-permutazioni-con-ripetizione/)

@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore percentuale](https://ognistrumento.com/calcolatore-percentuale/)

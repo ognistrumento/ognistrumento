@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore potenze](https://ognistrumento.com/calcolatore-potenze/)

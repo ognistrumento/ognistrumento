@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="dividend" placeholder="Dividendo (es. 100)" min="0">
+        <input type="number" id="divisor" placeholder="Divisore (es. 3)" min="1">
+        <button id="calculateButton">Calcola</button>
+    </div>
+    <pre class="stats">
+        <p>Quoziente intero: <span id="quotient">-</span></p>
+        <p>Resto: <span id="remainder">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+text-align: center;
+}
+.input-container > input {
+width: 80%;
+margin: 10px;
+}
+.input-container button {
+width: 80%;
+margin: 10px;
+}
+</style>
+
+<script>
+    const calculateButton = document.getElementById('calculateButton');
+    const dividend = document.getElementById('dividend');
+    const divisor = document.getElementById('divisor');
+    const quotient = document.getElementById('quotient');
+    const remainder = document.getElementById('remainder');
+
+    function calculateDivision() {
+        const a = parseInt(dividend.value);
+        const b = parseInt(divisor.value);
+
+        if (isNaN(a) || isNaN(b) || b <= 0 || a < 0) {
+            alert("Inserisci valori validi per dividendo e divisore.");
+            return;
+        }
+
+        // Calcolo del quoziente e del resto
+        const q = Math.floor(a / b);
+        const r = a % b;
+
+        // Aggiornamento dei risultati
+        quotient.textContent = q;
+        remainder.textContent = r;
+    }
+
+    calculateButton.addEventListener('click', calculateDivision);
+</script>

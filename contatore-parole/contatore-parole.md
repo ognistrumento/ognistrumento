@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [contatore parole](https://ognistrumento.com/contatore-parole/)

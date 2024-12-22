@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore media voti](https://ognistrumento.com/calcolatore-media-voti/)

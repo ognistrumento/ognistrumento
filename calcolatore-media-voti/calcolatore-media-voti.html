@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="input-container">
+        <!-- Input iniziali per i voti -->
+        <div id="votesContainer">
+            <label>Voto 1: <input type="number" class="vote" placeholder="Voto 1"></label>
+            <label>Voto 2: <input type="number" class="vote" placeholder="Voto 2"></label>
+            <label>Voto 3: <input type="number" class="vote" placeholder="Voto 3"></label>
+        </div>
+        <!-- Pulsante per aggiungere altri input -->
+        <button id="addVoteButton">Aggiungi un altro voto</button>
+        <!-- Impostazioni voto minimo e massimo -->
+        <label>Voto minimo: <input type="number" id="minVote" placeholder="Voto minimo" value="0"></label>
+        <label>Voto massimo: <input type="number" id="maxVote" placeholder="Voto massimo" value="10"></label>
+        <!-- Pulsante per calcolare la media -->
+        <button id="calculateAverageButton">Calcola media</button>
+        <!-- Impostazioni media target -->
+        <label>Media target: <input type="number" id="targetAverage" placeholder="Media target" step="0.01"></label>
+        <label>Numero di voti rimanenti: <input type="number" id="remainingVotes" placeholder="Numero di voti rimanenti" min="0"></label>
+        <!-- Pulsante per calcolare i voti necessari -->
+        <button id="calculateNeededVotesButton">Calcola voti necessari per raggiungere la media target</button>
+    </div>
+    <pre class="stats">
+        <p>Media: <span id="average">-</span></p>
+        <p>Voti necessari: <span id="neededVotes">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+    text-align: center;
+}
+.input-container > label {
+    display: block;
+    margin: 10px auto;
+    width: 80%;
+    text-align: left;
+}
+.input-container > label > input {
+    width: 100%;
+}
+.input-container button {
+    width: 80%;
+    margin: 10px;
+}
+.vote {
+    width: 100%;
+    margin: 5px 0;
+}
+</style>
+
+<script>
+    const votesContainer = document.getElementById('votesContainer');
+    const addVoteButton = document.getElementById('addVoteButton');
+    const calculateAverageButton = document.getElementById('calculateAverageButton');
+    const calculateNeededVotesButton = document.getElementById('calculateNeededVotesButton');
+    const averageDisplay = document.getElementById('average');
+    const neededVotesDisplay = document.getElementById('neededVotes');
+    const minVoteInput = document.getElementById('minVote');
+    const maxVoteInput = document.getElementById('maxVote');
+    const targetAverageInput = document.getElementById('targetAverage');
+    const remainingVotesInput = document.getElementById('remainingVotes');
+
+    // Funzione per aggiungere un nuovo input voto
+    function addVoteInput() {
+        const newLabel = document.createElement('label');
+        const newInput = document.createElement('input');
+        newInput.type = 'number';
+        newInput.className = 'vote';
+        newInput.placeholder = `Voto ${votesContainer.children.length + 1}`;
+        newInput.min = parseFloat(minVoteInput.value) || 0;
+        newInput.max = parseFloat(maxVoteInput.value) || 10;
+        newLabel.textContent = `Voto ${votesContainer.children.length + 1}: `;
+        newLabel.appendChild(newInput);
+        votesContainer.appendChild(newLabel);
+    }
+
+    // Funzione per calcolare la media
+    function calculateAverage() {
+        const votes = document.querySelectorAll('.vote');
+        let sum = 0;
+        let count = 0;
+
+        votes.forEach(vote => {
+            const value = parseFloat(vote.value);
+            const min = parseFloat(minVoteInput.value) || 0;
+            const max = parseFloat(maxVoteInput.value) || 10;
+
+            if(value < min || value > max){
+                alert("Uno dei voti è minore del valore minimo o maggiore del valore massimo");
+                return;
+            }
+
+            if (!isNaN(value)) {
+                sum += value;
+                count++;
+            }
+        });
+
+        if (count === 0) {
+            alert("Inserisci almeno un voto valido per calcolare la media.");
+            return;
+        }
+
+        const average = (sum / count).toFixed(2);
+        averageDisplay.textContent = average;
+document.getElementById('average').scrollIntoView();
+    }
+
+    // Funzione per calcolare i voti necessari per raggiungere la media target
+    function calculateNeededVotes() {
+        const votes = document.querySelectorAll('.vote');
+        const targetAverage = parseFloat(targetAverageInput.value);
+        const remainingVotes = parseInt(remainingVotesInput.value);
+        const min = parseFloat(minVoteInput.value) || 0;
+        const max = parseFloat(maxVoteInput.value) || 10;
+
+        if (isNaN(targetAverage) || isNaN(remainingVotes) || remainingVotes <= 0) {
+            alert("Inserisci una media target valida e un numero di voti rimanenti.");
+            return;
+        }
+
+        let sum = 0;
+        let count = 0;
+
+        votes.forEach(vote => {
+            const value = parseFloat(vote.value);
+            if (!isNaN(value)) {
+                sum += value;
+                count++;
+            }
+        });
+
+        const totalVotes = count + remainingVotes;
+        const requiredSum = targetAverage * totalVotes;
+        const neededSum = requiredSum - sum;
+
+        if (neededSum / remainingVotes < min || neededSum / remainingVotes > max) {
+            neededVotesDisplay.textContent = `Non è possibile raggiungere la media target con i vincoli di voto.`;
+        } else {
+            neededVotesDisplay.textContent = `Ogni voto rimanente deve essere circa ${(neededSum / remainingVotes).toFixed(2)}.`;
+        }
+    }
+
+    // Event listeners
+    addVoteButton.addEventListener('click', addVoteInput);
+    calculateAverageButton.addEventListener('click', calculateAverage);
+    calculateNeededVotesButton.addEventListener('click', calculateNeededVotes);
+</script>

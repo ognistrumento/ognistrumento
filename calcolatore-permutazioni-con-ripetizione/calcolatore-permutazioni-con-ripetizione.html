@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="input-container">
+        <label for="totalElements">Numero totale di oggetti:</label>
+        <input type="number" id="totalElements" placeholder="Numero totale di oggetti" min="1" value="6">
+
+        <label for="duplicateGroups">Numero di gruppi di duplicati:</label>
+        <input type="number" id="duplicateGroups" placeholder="Numero di gruppi di duplicati" min="0" value="2">
+
+        <div id="duplicatesContainer">
+            <label for="duplicateInput0">Numero di elementi nel gruppo 1:</label>
+            <input type="number" id="duplicateInput0" class="duplicateInput" placeholder="Numero di elementi nel gruppo 1" min="1" value="2">
+
+            <label for="duplicateInput1">Numero di elementi nel gruppo 2:</label>
+            <input type="number" id="duplicateInput1" class="duplicateInput" placeholder="Numero di elementi nel gruppo 2" min="1" value="2">
+        </div>
+
+        <button id="calculateButton">Calcola</button>
+    </div>
+    <pre class="stats">
+        <p>Permutazioni con ripetizione: <span id="permutations">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+    text-align: center;
+}
+.input-container > input {
+    width: 80%;
+    margin: 10px;
+}
+.input-container label {
+    display: block;
+    margin-top: 10px;
+}
+.input-container button {
+    width: 80%;
+    margin: 10px;
+}
+#duplicatesContainer {
+    margin: 10px;
+    text-align: center;
+}
+.stats {
+    text-align: center;
+    font-size: 18px;
+}
+</style>
+
+<script>
+    const totalElementsInput = document.getElementById('totalElements');
+    const duplicateGroupsInput = document.getElementById('duplicateGroups');
+    const duplicatesContainer = document.getElementById('duplicatesContainer');
+    const calculateButton = document.getElementById('calculateButton');
+    const permutations = document.getElementById('permutations');
+
+    function factorial(num) {
+        if (num <= 1) return 1;
+        return num * factorial(num - 1);
+    }
+
+    function updateDuplicateInputs() {
+        duplicatesContainer.innerHTML = '';
+        const duplicateGroups = parseInt(duplicateGroupsInput.value);
+
+        if (isNaN(duplicateGroups) || duplicateGroups < 0) {
+            alert("Inserisci un numero valido di gruppi di duplicati.");
+            return;
+        }
+
+        for (let i = 0; i < duplicateGroups; i++) {
+            const label = document.createElement('label');
+            label.textContent = `Numero di elementi nel gruppo ${i + 1}:`;
+            label.setAttribute('for', `duplicateInput${i}`);
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.placeholder = `Numero di elementi nel gruppo ${i + 1}`;
+            input.min = '1';
+            input.className = 'duplicateInput';
+            input.id = `duplicateInput${i}`;
+
+            duplicatesContainer.appendChild(label);
+            duplicatesContainer.appendChild(input);
+        }
+    }
+
+    function calculatePermutationsWithRepetition() {
+        const totalElements = parseInt(totalElementsInput.value);
+        const duplicateInputs = Array.from(document.getElementsByClassName('duplicateInput'));
+
+        if (isNaN(totalElements) || totalElements < 1) {
+            alert("Inserisci un numero valido di oggetti totali.");
+            return;
+        }
+
+        const duplicateCounts = duplicateInputs.map(input => parseInt(input.value)).filter(val => !isNaN(val) && val > 0);
+        const totalDuplicates = duplicateCounts.reduce((sum, count) => sum + count, 0);
+
+        if (totalDuplicates > totalElements) {
+            alert("Il numero totale degli oggetti nei gruppi duplicati non può superare il totale degli oggetti.");
+            return;
+        }
+
+        // Calcola il denominatore come prodotto dei fattoriali delle frequenze
+        const denominator = duplicateCounts.reduce((acc, freq) => acc * factorial(freq), 1);
+
+        // Calcola le permutazioni
+        const result = factorial(totalElements) / denominator;
+
+        // Aggiorna il risultato
+        permutations.textContent = result;
+    }
+
+    duplicateGroupsInput.addEventListener('input', updateDuplicateInputs);
+    calculateButton.addEventListener('click', calculatePermutationsWithRepetition);
+</script>

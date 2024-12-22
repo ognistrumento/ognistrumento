@@ -1,0 +1,129 @@
+<div class="container">
+    <div class="input-container">
+        <input type="number" id="stringLength" placeholder="Lunghezza della stringa">
+        <select id="stringType">
+            <option value="alpha">Alfabetica</option>
+            <option value="numeric">Numerica</option>
+            <option value="alphanumeric">Alfanumerica</option>
+        </select>
+        <button id="generateStringButton">Genera Stringa Casuale</button>
+    </div>
+    <div class="stats">
+        <h3>Risultato</h3>
+        <pre id="randomString" class="output-box"></pre>
+    </div>
+</div>
+
+<script>
+    const generateStringButton = document.getElementById('generateStringButton');
+    const stringLength = document.getElementById('stringLength');
+    const stringType = document.getElementById('stringType');
+    const randomString = document.getElementById('randomString');
+
+    function generateRandomString() {
+        const length = parseInt(stringLength.value);
+        const type = stringType.value;
+
+        if (isNaN(length) || length <= 0) {
+            alert("Inserisci una lunghezza valida (numero positivo)." );
+            return;
+        }
+
+        let characters = "";
+        if (type === "alpha") {
+            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        } else if (type === "numeric") {
+            characters = "0123456789";
+        } else if (type === "alphanumeric") {
+            characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        }
+
+        let result = "";
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            result += characters[randomIndex];
+        }
+
+        randomString.textContent = result;
+    }
+
+    generateStringButton.addEventListener('click', generateRandomString);
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .input-container {
+        margin-bottom: 20px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    .stats {
+        margin-top: 20px;
+        font-size: 22pt;
+    }
+
+    .stats p {
+        margin: 5px 0;
+    }
+
+    .output-box {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        input, select {
+            font-size: 14px;
+        }
+
+        button {
+            font-size: 14px;
+        }
+    }
+</style>

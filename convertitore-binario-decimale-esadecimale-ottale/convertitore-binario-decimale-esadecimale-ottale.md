@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [convertitore binario decimale esadecimale ottale](https://ognistrumento.com/convertitore-binario-decimale-esadecimale-e-ottale/)

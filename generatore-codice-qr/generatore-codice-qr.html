@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="input-container">
+        <input type="text" id="qrText" placeholder="Inserisci il testo o URL per generare il codice QR">
+        <button id="generateBtn">Genera Codice QR</button>
+    </div>
+    <div class="qr-display">
+        <canvas id="qrCanvas"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+
+<script>
+    const qrText = document.getElementById('qrText');
+    const generateBtn = document.getElementById('generateBtn');
+    const qrCanvas = document.getElementById('qrCanvas');
+
+    generateBtn.addEventListener('click', () => {
+        const text = qrText.value.trim();
+
+        if (text) {
+            QRCode.toCanvas(qrCanvas, text, { width: 200, margin: 1 }, (error) => {
+                if (error) {
+                    alert('Si è verificato un errore nella generazione del codice QR. Controlla la console per ulteriori dettagli.');
+                    console.error('Errore nella generazione del QR:', error);
+                } else {
+                    console.log('Codice QR generato con successo!');
+                }
+            });
+        } else {
+            alert('Inserisci un testo o URL valido!');
+        }
+    });
+</script>
+
+<style>
+.input-container {
+text-align: center;
+}
+.input-container > input {
+width: 80%;
+margin: 10px;
+}
+.input-container button {
+width: 80%;
+margin: 10px;
+}
+
+
+    canvas {
+        display: block;
+        margin: 10px auto;
+    }
+</style>

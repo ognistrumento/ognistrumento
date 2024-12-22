@@ -1,0 +1,147 @@
+<div class="tool-section" id="section-age-calculator">
+    <div class="tool-content">
+        <div class="age-input-container">
+            <!-- Data di nascita -->
+            <div class="age-group">
+                <label for="birth-date">Data di nascita:</label>
+                <input type="date" id="birth-date" class="age-input">
+            </div>
+
+            <!-- Codice Fiscale -->
+            <div class="age-group">
+                <label for="fiscal-code">Codice Fiscale:</label>
+                <input type="text" id="fiscal-code" placeholder="Inserisci Codice Fiscale" class="age-input">
+            </div>
+
+            <!-- Calcola età a -->
+            <div class="age-group">
+                <label for="reference-date">Calcola età al:</label>
+                <input type="date" id="reference-date" class="age-input">
+            </div>
+
+            <!-- Bottone per calcolare -->
+            <div class="calculate-button">
+                <button onclick="calculateAge()">Calcola</button>
+            </div>
+
+            <!-- Risultato -->
+            <div class="result-group">
+                <p id="result-age" class="tool-result"></p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Imposta le date odierne di default
+    window.onload = function () {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('reference-date').value = today;
+    };
+
+    function calculateAge() {
+    const birthDateInput = document.getElementById('birth-date').value;
+    const fiscalCode = document.getElementById('fiscal-code').value ? document.getElementById('fiscal-code').value.toUpperCase() : null;
+    const referenceDateInput = document.getElementById('reference-date').value;
+
+    let birthDate;
+
+    if (birthDateInput) {
+        birthDate = new Date(birthDateInput);
+    } else if (fiscalCode) {
+        birthDate = extractDateFromFiscalCode(fiscalCode);
+        if (!birthDate) {
+            document.getElementById('result-age').textContent = "Errore: Codice Fiscale non valido.";
+            return;
+        }
+    } else {
+        document.getElementById('result-age').textContent = "Errore: Inserisci una data di nascita o un codice fiscale.";
+        return;
+    }
+
+    const referenceDate = new Date(referenceDateInput);
+
+    if (birthDate > referenceDate) {
+        document.getElementById('result-age').textContent = "Errore: La data di nascita non può essere nel futuro rispetto alla data di riferimento.";
+        return;
+    }
+
+    const years = referenceDate.getFullYear() - birthDate.getFullYear() -
+        (referenceDate < new Date(referenceDate.getFullYear(), birthDate.getMonth(), birthDate.getDate()) ? 1 : 0);
+
+    let months = referenceDate.getMonth() - birthDate.getMonth();
+    if (months < 0) {
+        months += 12;
+    }
+
+    let days = referenceDate.getDate() - birthDate.getDate();
+    if (days < 0) {
+        // Ottieni i giorni nel mese precedente
+        const lastMonth = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 0);
+        days += lastMonth.getDate();
+        months--;
+        if (months < 0) {
+            months += 12;
+        }
+    }
+
+    document.getElementById('result-age').textContent =
+        `${years} anni, ${months} mesi, ${days} giorni.`;
+}
+
+function extractDateFromFiscalCode(cf) {
+    if (cf.length < 11) return null;
+
+    const year = parseInt(cf.substr(6, 2)) + (parseInt(cf.substr(6, 2)) < 30 ? 2000 : 1900);
+    const monthCodes = "ABCDEHLMPRST";
+    const month = monthCodes.indexOf(cf.charAt(8));
+    if (month === -1) return null;
+
+    const day = parseInt(cf.substr(9, 2)) > 31 ? parseInt(cf.substr(9, 2)) - 40 : parseInt(cf.substr(9, 2));
+    return new Date(year, month, day);
+}
+
+</script>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .age-input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .age-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .age-input {
+        padding: 5px;
+        font-size: 16px;
+    }
+
+    .calculate-button {
+        text-align: center;
+    }
+
+    .calculate-button button {
+        font-size: 16px;
+        padding: 8px 15px;
+        cursor: pointer;
+    }
+
+    .result-group {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+</style>

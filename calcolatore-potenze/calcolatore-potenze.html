@@ -1,0 +1,101 @@
+<div class="tool-section" id="section-powers">
+    <div class="tool-content">
+        <div class="powers-input-container">
+            <!-- Base -->
+            <div class="power-group">
+                <input type="number" id="base" placeholder="Base" class="power-input">
+            </div>
+
+            <!-- Esponente -->
+            <div class="power-group">
+                <input type="number" id="exponent" placeholder="Esponente" class="power-input">
+            </div>
+
+            <!-- Bottone per calcolare -->
+            <div class="equal-sign">
+                <button onclick="calculatePower()">=</button>
+            </div>
+
+            <!-- Risultato -->
+            <div class="result-group">
+                <p id="result-power" class="tool-result"></p>
+            </div>
+        </div>
+        <div class="explanation-box">
+            <h3>Descrizione:</h3>
+            <p>Questo strumento calcola la potenza di un numero. Inserisci la base e l'esponente e poi clicca sul tasto "=" per ottenere il risultato.</p>
+            <h3>Esempio:</h3>
+            <p>Se inserisci base = 2 ed esponente = 3, il risultato sarà "8" (2^3 = 8).</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculatePower() {
+        const base = parseFloat(document.getElementById('base').value);
+        const exponent = parseFloat(document.getElementById('exponent').value);
+
+        if (isNaN(base) || isNaN(exponent)) {
+            document.getElementById('result-power').textContent = "Errore: Inserisci numeri validi.";
+            return;
+        }
+
+        const result = Math.pow(base, exponent);
+        document.getElementById('result-power').textContent = result;
+    }
+</script>
+
+<style>
+    .tool-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .tool-content h2 {
+        text-align: center;
+    }
+
+    .powers-input-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .power-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .power-input {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .equal-sign button {
+        font-size: 20px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .result-group {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .explanation-box {
+        margin-top: 20px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+</style>

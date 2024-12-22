@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="textarea-container">
+        <textarea id="jsonInput" placeholder="Inserisci il JSON qui..."></textarea>
+    </div>
+    <div class="output-container">
+        <h3>JSON Formattato</h3>
+        <pre id="formattedJsonOutput" class="output-box"></pre>
+    </div>
+    <div class="error-message" id="jsonError" style="color: red; display: none;">
+        Il JSON inserito non è valido. Correggi e riprova.
+    </div>
+</div>
+
+<script>
+    const jsonInput = document.getElementById('jsonInput');
+    const formattedJsonOutput = document.getElementById('formattedJsonOutput');
+    const jsonError = document.getElementById('jsonError');
+
+    function formatJson() {
+        const jsonText = jsonInput.value.trim();
+        try {
+            
+            const parsedJson = JSON.parse(jsonText);
+
+            
+            formattedJsonOutput.textContent = JSON.stringify(parsedJson, null, 4);
+
+            jsonError.style.display = 'none';
+        } catch (e) {
+            jsonError.style.display = 'block';
+            formattedJsonOutput.textContent = '';
+        }
+    }
+    jsonInput.addEventListener('input', formatJson);
+</script>
+
+<style>
+    .output-container {
+        margin-top: 20px;
+    }
+
+    .output-box {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 10px;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-family: monospace;
+        font-size: 14px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .error-message {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .output-box {
+            font-size: 12px;
+        }
+    }
+</style>

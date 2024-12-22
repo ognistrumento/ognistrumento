@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore data di nascita da codice fiscale](https://ognistrumento.com/calcolatore-data-di-nascita-da-codice-fiscale/)
