@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="input-container">
+        <label for="n">Numero totale di elementi (n):</label>
+        <input type="number" id="n" placeholder="Numero totale di elementi (n)" min="0">
+        <label for="r">Numero di elementi da scegliere (r):</label>
+        <input type="number" id="r" placeholder="Numero di elementi da scegliere (r)" min="0">
+        <button id="calculateButton">Calcola</button>
+    </div>
+    <pre class="stats">
+        <p>Combinazioni: <span id="combinations">-</span></p>
+    </pre>
+</div>
+
+<style>
+.input-container {
+    text-align: center;
+}
+.input-container > input {
+    width: 80%;
+    margin: 10px;
+}
+.input-container label {
+    display: block;
+    margin-top: 10px;
+}
+.input-container button {
+    width: 80%;
+    margin: 10px;
+}
+.stats {
+    text-align: center;
+    font-size: 18px;
+}
+</style>
+
+<script>
+    const calculateButton = document.getElementById('calculateButton');
+    const n = document.getElementById('n');
+    const r = document.getElementById('r');
+    const combinations = document.getElementById('combinations');
+
+    function factorial(num) {
+        if (num <= 1) return 1;
+        return num * factorial(num - 1);
+    }
+
+    function calculateCombinations() {
+        const totalElements = parseInt(n.value);
+        const elementsToChoose = parseInt(r.value);
+
+        if (isNaN(totalElements) || isNaN(elementsToChoose) || totalElements < 0 || elementsToChoose < 0 || elementsToChoose > totalElements) {
+            alert("Inserisci valori validi per n e r. Assicurati che r <= n.");
+            return;
+        }
+
+        const result = Math.floor(factorial(totalElements) / (factorial(elementsToChoose) * factorial(totalElements - elementsToChoose)));
+        combinations.textContent = result;
+    }
+
+    calculateButton.addEventListener('click', calculateCombinations);
+</script>

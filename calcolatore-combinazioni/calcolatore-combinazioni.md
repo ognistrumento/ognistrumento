@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [calcolatore combinazioni](https://ognistrumento.com/calcolatore-combinazioni/)
