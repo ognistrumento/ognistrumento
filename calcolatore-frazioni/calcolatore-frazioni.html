@@ -1,14 +1,12 @@
 <div class="tool-section" id="section-fractions">
     <div class="tool-content">
         <div class="fractions-input-container">
-            <!-- Prima frazione -->
             <div class="fraction-group">
                 <input type="number" id="numerator1" placeholder="Numeratore" class="fraction-input top">
                 <div class="fraction-line"></div>
                 <input type="number" id="denominator1" placeholder="Denominatore" class="fraction-input bottom">
             </div>
 
-            <!-- Operatore -->
             <div class="operation-group">
                 <select id="operation">
                     <option value="add">+</option>
@@ -20,29 +18,29 @@
                 </select>
             </div>
 
-            <!-- Seconda frazione -->
             <div class="fraction-group">
                 <input type="number" id="numerator2" placeholder="Numeratore" class="fraction-input top">
                 <div class="fraction-line"></div>
                 <input type="number" id="denominator2" placeholder="Denominatore" class="fraction-input bottom">
             </div>
 
-            <!-- Bottone per calcolare -->
             <div class="equal-sign">
                 <button onclick="calculateFractions()">=</button>
             </div>
 
-            <!-- Risultato -->
             <div class="result-group">
                 <p id="result-fractions" class="tool-result"></p>
             </div>
         </div>
         <div class="explanation-box">
             <h3>Descrizione:</h3>
-            <p>Questo strumento calcola la somma, la sottrazione, la moltiplicazione, la divisione e il confronto tra frazioni, inserisci i valori dei numeratori, dei denominatori e l'operazione che vuoi eseguire e poi clicca sul tasto "="</p>
+            <p>Questo strumento calcola la somma, la sottrazione, la moltiplicazione, la divisione e il confronto tra
+                frazioni, inserisci i valori dei numeratori, dei denominatori e l'operazione che vuoi eseguire e poi
+                clicca sul tasto "="</p>
             <h3>Esempio:</h3>
             <p>Se inserisci 12/7, scegli "+" e inserisci 8/5, il risultato sarà "116/35".</p>
-<p> Se vuoi fare solo la riduzione ai minimi termini, inserisci la prima frazione, usa l'operazione "+" e nella seconda frazione inserisci 0/1. Il risultato sarà la prima frazione ridotta ai minimi termini
+            <p> Se vuoi fare solo la riduzione ai minimi termini, inserisci la prima frazione, usa l'operazione "+" e
+                nella seconda frazione inserisci 0/1. Il risultato sarà la prima frazione ridotta ai minimi termini
         </div>
     </div>
 </div>
@@ -89,7 +87,6 @@
                 return;
         }
 
-        // Semplifica frazione
         const gcd = getGCD(resultNum, resultDen);
         resultNum = resultNum / gcd;
         resultDen = resultDen / gcd;

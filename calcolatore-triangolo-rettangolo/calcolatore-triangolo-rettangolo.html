@@ -1,0 +1,926 @@
+<div class="triangle-tool">
+    <div class="triangle-inputs">
+        <label for="cateto-a">Cateto a:</label>
+        <input type="number" onwheel="this.blur()" id="cateto-a" placeholder="Inserisci il valore">
+
+        <label for="cateto-b">Cateto b:</label>
+        <input type="number" onwheel="this.blur()" id="cateto-b" placeholder="Inserisci il valore">
+
+        <label for="ipotenusa">Ipotenusa (c):</label>
+        <input type="number" onwheel="this.blur()" id="ipotenusa" placeholder="Inserisci il valore">
+
+        <label for="angolo-alpha">Angolo α (gradi):</label>
+        <input type="number"  onwheel="this.blur()" id="angolo-alpha" placeholder="Inserisci il valore">
+
+        <label for="angolo-beta">Angolo β (gradi):</label>
+        <input type="number" onwheel="this.blur()" id="angolo-beta" placeholder="Inserisci il valore">
+
+        <label for="perimetro">Perimetro:</label>
+        <input type="number" onwheel="this.blur()" id="perimetro" placeholder="Inserisci il valore">
+
+        <label for="area">Area:</label>
+        <input type="number" onwheel="this.blur()" id="area" placeholder="Inserisci il valore">
+    </div>
+
+    <button onclick="computeTriangle()">Calcola</button>
+    <button onclick="resetForm()">Reset</button>
+    <canvas id="triangleCanvas" style="display: none; width: 100%;"></canvas>
+</div>
+
+
+<script>
+    <!--
+
+    function round(value, digits = 6) {
+        return value ? Number(value.toFixed(digits)) : null;
+    }
+
+    function enoughtData(inputs) {
+        return Object.values(inputs).filter(val => val !== null).length >= 2;
+    }
+
+    function areEqual(a, b) {
+        if (a === null || b === null) return true;
+        return Math.abs(a - b) < 0.01;
+    }
+
+
+    function computeTriangle() {
+
+        try {
+            debugger;
+        const catetoA = round(parseFloat(document.getElementById('cateto-a').value));
+        const catetoB = round(parseFloat(document.getElementById('cateto-b').value));
+        const ipotenusa = round(parseFloat(document.getElementById('ipotenusa').value));
+        const alpha = round(parseFloat(document.getElementById('angolo-alpha').value));
+        const beta = round(parseFloat(document.getElementById('angolo-beta').value));
+        const perimetro = round(parseFloat(document.getElementById('perimetro').value));
+        const area = round(parseFloat(document.getElementById('area').value));
+
+        if(!enoughtData({ catetoA, catetoB, ipotenusa, alpha, beta, perimetro, area })){
+            alert('Inserisci almeno due valori per calcolare i dati del triangolo.');
+            return;
+        }
+       
+
+        let validCatetoA, validCatetoB, validIpotenusa, validAlpha, validBeta, validPerimetro, validArea;
+
+        if (catetoA && catetoB) {
+
+            validCatetoA = catetoA;
+            validCatetoB = catetoB;
+
+            validIpotenusa = round(Math.sqrt(catetoA ** 2 + catetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di cateto a, cateto b e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((catetoA * catetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto a, cateto b e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(catetoA + catetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto a, cateto b e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(catetoA / validIpotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(catetoB / validIpotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di cateto a, cateto b e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di cateto a, cateto b e angolo β non sono compatibili")
+                return;
+            }
+        } else if (catetoA && ipotenusa) {
+            validCatetoA = catetoA;
+            validIpotenusa = ipotenusa;
+
+            validCatetoB = round(Math.sqrt(ipotenusa ** 2 - catetoA ** 2));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di cateto a, ipotenusa e cateto b non sono compatibili")
+                return;
+            }
+
+            validArea = round((catetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto a, ipotenusa e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(catetoA + validCatetoB + ipotenusa);
+
+            if (perimetro && validPerimetro != perimetro) {
+                alert("i valori di cateto a, ipotenusa e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(catetoA / ipotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(validCatetoB / ipotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di cateto a, ipotenusa e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di cateto a, ipotenusa e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (catetoB && ipotenusa) {
+            validCatetoB = catetoB;
+            validIpotenusa = ipotenusa;
+
+            validCatetoA = round(Math.sqrt(ipotenusa ** 2 - catetoB ** 2));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di cateto b, ipotenusa e cateto a non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * catetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto b, ipotenusa e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + catetoB + ipotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto b, ipotenusa e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(validCatetoA / ipotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(catetoB / ipotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di cateto b, ipotenusa e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di cateto b, ipotenusa e angolo β non sono compatibili")
+                return;
+            }
+        } else if (catetoA && alpha) {
+
+            validCatetoA = catetoA;
+            validAlpha = alpha;
+            validCatetoB = round(catetoA / Math.tan(alpha * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di cateto a, angolo α e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(catetoA / Math.sin(alpha * Math.PI / 180));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di cateto a, angolo α e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((catetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto a, angolo α e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(catetoA + validCatetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto a, angolo α e perimetro non sono compatibili")
+                return;
+            }
+
+            validBeta = round(90 - alpha);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di cateto a, angolo α e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (catetoA && beta) {
+
+            validCatetoA = catetoA;
+            validBeta = beta;
+            validCatetoB = round(catetoA * Math.tan(beta * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di cateto a, angolo β e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(catetoA / Math.cos(beta * Math.PI / 180));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di cateto a, angolo β e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((catetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto a, angolo β e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(catetoA + validCatetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto a, angolo β e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(90 - beta);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di cateto a, angolo β e angolo α non sono compatibili")
+                return;
+            }
+
+        } else if (catetoB && alpha) {
+
+            validCatetoB = catetoB;
+            validAlpha = alpha;
+
+            validCatetoA = round(catetoB * Math.tan(alpha * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di cateto b, angolo α e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(catetoB / Math.sin(alpha * Math.PI / 180));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di cateto b, angolo α e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * catetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto b, angolo α e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + catetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto b, angolo α e perimetro non sono compatibili")
+                return;
+            }
+
+            validBeta = round(90 - alpha);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di cateto b, angolo α e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (catetoB && beta) {
+
+            validCatetoB = catetoB;
+            validBeta = beta;
+
+            validCatetoA = round(catetoB / Math.tan(beta * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di cateto b, angolo β e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(catetoB / Math.cos(beta * Math.PI / 180));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di cateto b, angolo β e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * catetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di cateto b, angolo β e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + catetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di cateto b, angolo β e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(90 - beta);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di cateto b, angolo β e angolo α non sono compatibili")
+                return;
+            }
+
+        } else if (ipotenusa && alpha) {
+
+            validIpotenusa = ipotenusa;
+            validAlpha = alpha;
+
+            validCatetoA = round(ipotenusa * Math.sin(alpha * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di ipotenusa, angolo α e cateto a non sono compatibili")
+                return;
+            }
+
+            validCatetoB = round(ipotenusa * Math.cos(alpha * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di ipotenusa, angolo α e cateto b non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di ipotenusa, angolo α e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + validCatetoB + ipotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di ipotenusa, angolo α e perimetro non sono compatibili")
+                return;
+            }
+
+            validBeta = round(90 - alpha);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di ipotenusa, angolo α e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (ipotenusa && beta) {
+
+            validIpotenusa = ipotenusa;
+            validBeta = beta;
+
+            validCatetoB = round(ipotenusa * Math.sin(beta * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di ipotenusa, angolo β e cateto b non sono compatibili")
+                return;
+            }
+
+            validCatetoA = round(ipotenusa * Math.cos(beta * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di ipotenusa, angolo β e cateto a non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di ipotenusa, angolo β e area non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + validCatetoB + ipotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di ipotenusa, angolo β e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(90 - beta);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di ipotenusa, angolo β e angolo α non sono compatibili")
+                return;
+            }
+
+        } else if (area && catetoA) {
+
+            validCatetoA = catetoA;
+            validArea = area;
+
+            validCatetoB = round((area * 2) / catetoA);
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di area, cateto a e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(catetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di area, cateto a e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(catetoA + validCatetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di area, cateto a e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(catetoA / validIpotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(validCatetoB / validIpotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di area, cateto a e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di area, cateto a e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (area && catetoB) {
+
+            validCatetoB = catetoB;
+            validArea = area;
+
+            validCatetoA = round((area * 2) / catetoB);
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di area, cateto b e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + catetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di area, cateto b e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + catetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di area, cateto b e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(validCatetoA / validIpotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(catetoB / validIpotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di area, cateto b e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di area, cateto b e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (area && ipotenusa) {
+
+            validIpotenusa = ipotenusa;
+            validArea = area;
+
+            validCatetoA = round((area * 2) / ipotenusa);
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di area, ipotenusa e cateto a non sono compatibili")
+                return;
+            }
+
+            validCatetoB = round(Math.sqrt(ipotenusa ** 2 - validCatetoA ** 2));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di area, ipotenusa e cateto b non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + validCatetoB + ipotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di area, ipotenusa e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(validCatetoA / ipotenusa) * 180 / Math.PI);
+            validBeta = round(Math.asin(validCatetoB / ipotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di area, ipotenusa e angolo α non sono compatibili")
+                return;
+            }
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di area, ipotenusa e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (area && alpha) {
+
+            validAlpha = alpha;
+            validArea = area;
+
+            validCatetoA = round(Math.sqrt((area * 2) / Math.tan(alpha * Math.PI / 180)));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di area, angolo α e cateto a non sono compatibili")
+                return;
+            }
+
+            validCatetoB = round(Math.sqrt((area * 2) / Math.tan(90 - alpha)));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di area, angolo α e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di area, angolo α e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + validCatetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di area, angolo α e perimetro non sono compatibili")
+                return;
+            }
+
+            validBeta = round(90 - alpha);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di area, angolo α e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (area && beta) {
+
+            validBeta = beta;
+            validArea = area;
+
+            validCatetoB = round(Math.sqrt((area * 2) / Math.tan(beta * Math.PI / 180)));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di area, angolo β e cateto b non sono compatibili")
+                return;
+            }
+
+            validCatetoA = round(Math.sqrt((area * 2) / Math.tan(90 - beta)));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di area, angolo β e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di area, angolo β e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validPerimetro = round(validCatetoA + validCatetoB + validIpotenusa);
+
+            if (perimetro && !areEqual(perimetro, validPerimetro)) {
+                alert("i valori di area, angolo β e perimetro non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(90 - beta);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di area, angolo β e angolo α non sono compatibili")
+                return;
+            }
+
+        } else if (perimetro && catetoA) {
+
+            validCatetoA = catetoA;
+            validPerimetro = perimetro;
+
+            validCatetoB = round(perimetro - catetoA - Math.sqrt(catetoA ** 2));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di perimetro, cateto a e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(catetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di perimetro, cateto a e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((catetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di perimetro, cateto a e area non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(catetoA / validIpotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di perimetro, cateto a e angolo α non sono compatibili")
+                return;
+            }
+
+            validBeta = round(Math.asin(validCatetoB / validIpotenusa) * 180 / Math.PI);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di perimetro, cateto a e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (perimetro && catetoB) {
+
+            validCatetoB = catetoB;
+            validPerimetro = perimetro;
+
+            validCatetoA = round(perimetro - catetoB - Math.sqrt(catetoB ** 2));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di perimetro, cateto b e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + catetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di perimetro, cateto b e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * catetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di perimetro, cateto b e area non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(validCatetoA / validIpotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di perimetro, cateto b e angolo α non sono compatibili")
+                return;
+            }
+
+            validBeta = round(Math.asin(catetoB / validIpotenusa) * 180 / Math.PI);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di perimetro, cateto b e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (perimetro && ipotenusa) {
+
+            validIpotenusa = ipotenusa;
+            validPerimetro = perimetro;
+
+            validCatetoA = round(Math.sqrt(ipotenusa ** 2 - catetoB ** 2));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di perimetro, ipotenusa e cateto a non sono compatibili")
+                return;
+            }
+
+            validCatetoB = round(Math.sqrt(ipotenusa ** 2 - validCatetoA ** 2));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di perimetro, ipotenusa e cateto b non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di perimetro, ipotenusa e area non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(Math.asin(validCatetoA / ipotenusa) * 180 / Math.PI);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di perimetro, ipotenusa e angolo α non sono compatibili")
+                return;
+            }
+
+            validBeta = round(Math.asin(validCatetoB / ipotenusa) * 180 / Math.PI);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di perimetro, ipotenusa e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (perimetro && alpha) {
+
+            validAlpha = alpha;
+            validPerimetro = perimetro;
+
+            validCatetoA = round((perimetro / 2) * Math.sin(alpha * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di perimetro, angolo α e cateto a non sono compatibili")
+                return;
+            }
+
+            validCatetoB = round((perimetro / 2) * Math.cos(alpha * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di perimetro, angolo α e cateto b non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di perimetro, angolo α e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di perimetro, angolo α e area non sono compatibili")
+                return;
+            }
+
+            validBeta = round(90 - alpha);
+
+            if (beta && !areEqual(beta, validBeta)) {
+                alert("i valori di perimetro, angolo α e angolo β non sono compatibili")
+                return;
+            }
+
+        } else if (perimetro && beta) {
+
+            validBeta = beta;
+            validPerimetro = perimetro;
+
+            validCatetoB = round((perimetro / 2) * Math.sin(beta * Math.PI / 180));
+
+            if (catetoB && !areEqual(catetoB, validCatetoB)) {
+                alert("i valori di perimetro, angolo β e cateto b non sono compatibili")
+                return;
+            }
+
+            validCatetoA = round((perimetro / 2) * Math.cos(beta * Math.PI / 180));
+
+            if (catetoA && !areEqual(catetoA, validCatetoA)) {
+                alert("i valori di perimetro, angolo β e cateto a non sono compatibili")
+                return;
+            }
+
+            validIpotenusa = round(Math.sqrt(validCatetoA ** 2 + validCatetoB ** 2));
+
+            if (ipotenusa && !areEqual(ipotenusa, validIpotenusa)) {
+                alert("i valori di perimetro, angolo β e ipotenusa non sono compatibili")
+                return;
+            }
+
+            validArea = round((validCatetoA * validCatetoB) / 2);
+
+            if (area && !areEqual(area, validArea)) {
+                alert("i valori di perimetro, angolo β e area non sono compatibili")
+                return;
+            }
+
+            validAlpha = round(90 - beta);
+
+            if (alpha && !areEqual(alpha, validAlpha)) {
+                alert("i valori di perimetro, angolo β e angolo α non sono compatibili")
+                return;
+            }
+
+        } else {
+            alert('Non è possibile calcolare il triangolo con i valori inseriti.');
+        }
+
+
+        document.getElementById('ipotenusa').value = validIpotenusa;
+        document.getElementById('area').value = validArea;
+        document.getElementById('perimetro').value = validPerimetro;
+        document.getElementById('angolo-alpha').value = validAlpha;
+        document.getElementById('angolo-beta').value = validBeta;
+        document.getElementById('cateto-a').value = validCatetoA;
+        document.getElementById('cateto-b').value = validCatetoB;
+
+        drawTriangle(validCatetoA, validCatetoB, validIpotenusa, validAlpha, validBeta);
+
+
+
+    } catch (error) {
+        alert('Non è possibile calcolare il triangolo con i valori inseriti.');
+        console.error(error);
+    }
+
+
+    }
+
+    function drawTriangle(a, b, c, alpha, beta) {
+        
+        const canvas = document.getElementById('triangleCanvas');
+        canvas.width = window.innerWidth - window.innerWidth * 0.2;
+        const padding = window.innerWidth * 0.1;
+        const scale = (canvas.width - 2 * padding) / b;
+        
+        const scaledA = a * scale;
+        const scaledB = b * scale;
+        
+        
+
+        const heightRatio = a / b;
+        canvas.height = canvas.width * heightRatio + 2 * padding;
+        canvas.style.display = 'block';
+
+        const ctx = canvas.getContext('2d');
+
+        const startX = padding;
+        const startY = canvas.height - padding;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + scaledB, startY);
+        ctx.lineTo(startX + scaledB, startY - scaledA);
+        ctx.lineTo(startX, startY);
+        ctx.stroke();
+        
+        const squareSize = 20;
+        ctx.beginPath();
+        ctx.moveTo(startX + scaledB - squareSize, startY);
+        ctx.lineTo(startX + scaledB - squareSize, startY - squareSize);
+        ctx.lineTo(startX + scaledB, startY - squareSize);
+        ctx.stroke();
+
+        // add text
+        ctx.font = '16px Arial';
+        //flip a
+
+        ctx.fillText(`${round(a, 2)}`, scaledB-canvas.width*0.01, startY - scaledA/2);
+        ctx.fillText(`${round(b, 2)}`, startX + scaledB/2, startY + canvas.width*0.02);
+        ctx.fillText(`${round(c, 2)}`, startX + scaledB/2, startY - scaledA/2);
+        ctx.fillText(`${round(alpha, 2)}`, startX + canvas.width*0.01, startY +canvas.width*0.02);
+        ctx.fillText(`${round(beta, 2)}`, scaledB-canvas.width*0.01, startY - scaledA + canvas.width*0.03);
+        
+        
+    }
+
+    
+
+    function resetForm() {
+        document.querySelectorAll('.triangle-inputs input').forEach(input => {
+            input.value = '';
+        });
+        document.getElementById('triangleCanvas').style.display = 'none';
+    }
+    //-->
+</script>
+
+
+<style>
+    .triangle-tool {
+        margin: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .triangle-inputs label,
+    input {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .result {
+        font-size: 18px;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+</style>

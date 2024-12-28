@@ -1,0 +1,1 @@
+questo strumento è utilizzabile a questo link  [Calcolatore triangolo rettangolo](https://ognistrumento.com/calcolatore-per-triangolo-rettangolo/)
