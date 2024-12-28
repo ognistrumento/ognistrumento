@@ -875,9 +875,7 @@
         ctx.lineTo(startX + scaledB, startY - squareSize);
         ctx.stroke();
 
-        // add text
         ctx.font = '16px Arial';
-        //flip a
 
         ctx.fillText(`${round(a, 2)}`, scaledB-canvas.width*0.01, startY - scaledA/2);
         ctx.fillText(`${round(b, 2)}`, startX + scaledB/2, startY + canvas.width*0.02);
